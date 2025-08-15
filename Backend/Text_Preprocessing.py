@@ -4,6 +4,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 nltk.download('punkt')
 nltk.download('stopwords')
+nltk.download('wordnet')
 
 
 def sentence_tokenizer(text):
@@ -15,7 +16,7 @@ def word_tokenizer(text):
     lemmatizer = WordNetLemmatizer()
     for i in range(len(sentences)):
         words = word_tokenize(sentences[i])
-        words = [lemmatizer.lemmatize(word,'v') for word in words if word not in set(stopwords.words('english'))]
+        words = [lemmatizer.lemmatize(word,'v').lower() for word in words if word.lower() not in set(stopwords.words('english')) and word.isalpha()]
         sentences[i]=' '.join(words)
     return sentences
 
