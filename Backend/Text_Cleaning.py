@@ -25,8 +25,3 @@ def clean_tweet_text(text):
     # Remove extra whitespace
     text = re.sub(r'\s+', ' ', text).strip()
     return text
-
-
-# Example usage
-example_text = "Hello 👋 World! Visit https://example.com @user                     #HappyDay $$$"
-print(clean_tweet_text(example_text))
