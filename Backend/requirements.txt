@@ -1,1 +1,2 @@
-pip install nltk transformers torch numpy scipy
+pip install nltk transformers torch numpy scipy scikit-learn
+
