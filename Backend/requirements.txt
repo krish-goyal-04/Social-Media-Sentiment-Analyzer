@@ -1,2 +1,2 @@
-pip install nltk transformers torch numpy scipy scikit-learn pandas
+pip install nltk transformers torch numpy scipy scikit-learn pandas better-profanity
 
