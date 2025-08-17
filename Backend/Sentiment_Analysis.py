@@ -1,4 +1,4 @@
-from Text_Cleaning import clean_tweet_text
+from Text_Cleaning import clean_text
 from transformers import pipeline,logging,AutoTokenizer, AutoModelForSequenceClassification
 import torch
 
@@ -34,7 +34,7 @@ def sentiment_analyzer(text,batch_size=32):
         #for 100 tweets it will do 32+32+32+4
 
         batch_texts = text[i:i+batch_size]
-        batch_texts = [clean_tweet_text(t)for t in batch_texts]
+        #batch_texts = [clean_tweet_text(t)for t in batch_texts]
         encodings = tokenizer(batch_texts,return_tensors='pt',padding=True,truncation=True)
 
         """
@@ -55,10 +55,10 @@ def sentiment_analyzer(text,batch_size=32):
 
         predictions = torch.argmax(probabilities,dim=-1)
 
-        for t,pred,prob in zip(batch_texts,predictions,probabilities):
+        for pred,prob in zip(predictions,probabilities):
             label = model.config.id2label[pred.item()]
             confidence = prob[pred.item()].item()
-            results.append({"text":t,"label":label,"confidence":confidence})
+            results.append({"label":label,"confidence":round(confidence,2)})
     return results
 
 
@@ -76,12 +76,12 @@ def sentiment_analyzer(text,batch_mode=False):
         result = sentiment_pipeline(text)
     return result
 """
-tweets = [
+"""tweets = [
     "Covid cases are increasing fast!",
     "I love the new iPhone.",
     "This weather is terrible today."
-]
+]"""
 
 #ans = sentiment_analyzer("Covid cases are increasing fast!")
-ans = sentiment_analyzer(tweets)
-print(ans)
+#ans = sentiment_analyzer(tweets)
+#print(ans)

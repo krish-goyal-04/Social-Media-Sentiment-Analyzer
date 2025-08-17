@@ -1,6 +1,6 @@
 import re
 
-def clean_tweet_text(text):
+def clean_text(text):
     # Replace URLs
     text = re.sub(r'http\S+', 'http', text)
     # Replace user mentions

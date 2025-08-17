@@ -23,9 +23,9 @@ def extract_keywords(corpus,top_n=25):
 
 
     
-tweets = [
+"""tweets = [
     "Covid cases are increasing fast!",
     "I love the new iPhone.",
     "This weather is terrible today."
 ]
-print(extract_keywords(tweets))
+print(extract_keywords(tweets))"""
