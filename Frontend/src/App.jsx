@@ -1,6 +1,10 @@
+import Header from "./components/Header"
+
 const App = ()=>{
     return(
-        <div className="text-5xl text-orange-600">OOM Ganeshai Namahh:</div>
+        <div className=" min-h-screen bg-neutral-900">
+            <Header />
+        </div>
     )
 }
 export default App
