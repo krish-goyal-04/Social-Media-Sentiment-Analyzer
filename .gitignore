@@ -2,3 +2,4 @@ Backend/Readme.md
 Backend/venv
 Backend/__pycache__
 __pycache__/
+.env
