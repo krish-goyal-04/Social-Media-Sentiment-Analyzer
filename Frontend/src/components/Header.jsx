@@ -7,7 +7,7 @@ const Header = () => {
       <div className="flex justify-between items-center px-8 py-5">
         
         {/* Logo */}
-        <div className="text-2xl font-bold tracking-wide cursor-pointer hover:text-indigo-400 transition-colors duration-300">
+        <div className="bg-gradient-to-r from-indigo-400 to-pink-500 bg-clip-text text-transparent cursor-pointer text-4xl font-bold">
           TrendPulse
         </div>
 
