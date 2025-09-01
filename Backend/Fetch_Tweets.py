@@ -49,6 +49,8 @@ async def fetch_page(session,query,cursor=None):
 
 
 async def fetch_tweets(query,max_tweets=1000):
+    if query.strip()=="":
+        return []
     tweets = []
     cursors = [None]
     last_req_time = time.monotonic()

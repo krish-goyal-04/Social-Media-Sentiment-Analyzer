@@ -8,6 +8,7 @@ import asyncio
 from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
+from Emotion_Detection import detect_emotion
 
 app = FastAPI()
 
@@ -27,15 +28,21 @@ class QueryRequest(BaseModel):
 @app.post("/analyze/")
 async def mainFun(request:QueryRequest):
     tweets = await fetch_tweets(request.query,max_tweets=request.max_tweets)
+    if tweets == []:
+        return {
+            "tweetsData": [],
+            "keywords": []
+        }
     df = pd.DataFrame(tweets)
-    #df['text'] = tweets
 
     df['profanity_flag'] = df['text'].apply(lambda x: profanity.contains_profanity(str(x)))
 
     df['cleaned_data'] = df['text'].apply(clean_text)
 
-    df['individual_sentiment'] = df['cleaned_data'].apply(sentiment_analyzer) 
+    df['individual_sentiment'] = sentiment_analyzer(df['cleaned_data'].tolist())
     
+    df['detected_emotion'] = detect_emotion(df['text'].tolist())
+
     keywords = extract_keywords(df['cleaned_data'].tolist())
     
     return{
