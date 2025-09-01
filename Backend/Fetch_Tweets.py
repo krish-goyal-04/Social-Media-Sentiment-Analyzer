@@ -2,7 +2,7 @@ import asyncio
 import aiohttp
 import os
 from dotenv import load_dotenv
-
+import time
 load_dotenv()
 
 API_KEY = os.getenv('API_KEY')
@@ -18,8 +18,6 @@ async def fetch_page(session,query,cursor=None):
         params = {"query":query,"queryType":"Latest"}
         if cursor:
             params['cursor'] = cursor
-
-        await asyncio.sleep(1/REQUEST_PER_SECOND)
 
         async with session.get(URL,headers=HEADERS,params=params) as resp:
             if resp.status!=200:
@@ -53,7 +51,7 @@ async def fetch_page(session,query,cursor=None):
 async def fetch_tweets(query,max_tweets=1000):
     tweets = []
     cursors = [None]
-
+    last_req_time = time.monotonic()
     async with aiohttp.ClientSession() as session: #Using once open connection Tcp/ip and reusing it
         while len(tweets) < max_tweets and cursors:
 
@@ -70,14 +68,20 @@ async def fetch_tweets(query,max_tweets=1000):
 
             This prevents us from launching hundreds of requests at once and overloading the API.
             """
-            tasks = [fetch_page(session,query,c) for c in current_batch]
-            results = await asyncio.gather(*tasks)
+            now = time.monotonic()
+            elapsed = now-last_req_time
+            if elapsed<1:
+                await asyncio.sleep(1-elapsed)
+            last_req_time=time.monotonic()
 
-            for page_tweets,next_cursor in results:
+
+            tasks = [fetch_page(session,query,c) for c in current_batch]
+            for coro in asyncio.as_completed(tasks):
+                page_tweets,next_cursor = await coro
                 tweets.extend(page_tweets)
                 if next_cursor and len(tweets)<max_tweets:
                     cursors.append(next_cursor)
-            print("Fetched Tweets")
+            print(f"Fetched{len(tweets)} so far")
     
     return tweets[:max_tweets]
 

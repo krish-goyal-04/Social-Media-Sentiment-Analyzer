@@ -35,7 +35,7 @@ def sentiment_analyzer(text,batch_size=32):
 
         batch_texts = text[i:i+batch_size]
         #batch_texts = [clean_tweet_text(t)for t in batch_texts]
-        encodings = tokenizer(batch_texts,return_tensors='pt',padding=True,truncation=True)
+        encodings = tokenizer(batch_texts,return_tensors='pt',padding=True,truncation=True,max_length=512)
 
         """
         return_tensors='pt': return results as PyTorch tensors.

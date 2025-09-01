@@ -6,9 +6,9 @@ import pandas as pd
 from Fetch_Tweets import fetch_tweets
 import asyncio
 
-query = "AI"
+query = "Modi"
 def mainFun():
-    tweets = asyncio.run(fetch_tweets(query,max_tweets=100))
+    tweets = asyncio.run(fetch_tweets(query,max_tweets=500))
     df = pd.DataFrame(tweets)
     #df['text'] = tweets
 
