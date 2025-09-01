@@ -1,12 +1,14 @@
 import Header from "./components/Header"
-import HomePage from "./components/Home/HomePage"
+import { Outlet } from "react-router-dom"
+
 
 const App = ()=>{
     return(
         <div className=" min-h-screen bg-neutral-900">
             <Header />
-            <HomePage />
+            <Outlet />
         </div>
+        
     )
 }
 export default App

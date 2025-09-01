@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import {Button} from "../../components/ui/button"
 import { ChartColumnBig } from "lucide-react";
-
+import {Link} from "react-router-dom"
 
 const InitialDisplay = ()=>{
     return(
@@ -32,10 +32,10 @@ const InitialDisplay = ()=>{
             <motion.div
                 initial={{opacity:0}}
                 animate={{opacity:1}}
-                transition={{delay:1,duration:1}}
+                transition={{delay:0.5,duration:0.5}}
                 className="flex space-x-7 mt-8"
                 >
-                    <Button size="lg" className="rounded-2xl transition-transform duration-300 hover:scale-105 hover:bg-indigo-500" variant="default" >Get Started</Button>
+                    <Button size="lg" className="rounded-2xl transition-transform duration-300 hover:scale-105 hover:bg-indigo-500" variant="default" ><Link to="/analyze">Get Started</Link></Button>
                     <Button size="lg" className="rounded-2xl transition-transform duration-300 hover:scale-105 hover:bg-indigo-500" variant="default">Demo</Button>
                     <Button size="lg" className="rounded-2xl transition-transform duration-300 hover:scale-105 hover:bg-indigo-500" variant="default">Learn More</Button>
             </motion.div>
