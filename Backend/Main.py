@@ -5,10 +5,28 @@ from better_profanity import profanity
 import pandas as pd
 from Fetch_Tweets import fetch_tweets
 import asyncio
+from fastapi import FastAPI
+from pydantic import BaseModel
+from fastapi.middleware.cors import CORSMiddleware
 
-query = "Modi"
-def mainFun():
-    tweets = asyncio.run(fetch_tweets(query,max_tweets=500))
+app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials = True,
+    allow_methods=["*"],
+    allow_headers = ["*"]
+)
+
+class QueryRequest(BaseModel):
+    query:str
+    max_tweets:int=50
+
+
+@app.post("/analyze/")
+async def mainFun(request:QueryRequest):
+    tweets = await fetch_tweets(request.query,max_tweets=request.max_tweets)
     df = pd.DataFrame(tweets)
     #df['text'] = tweets
 
@@ -19,8 +37,9 @@ def mainFun():
     df['individual_sentiment'] = df['cleaned_data'].apply(sentiment_analyzer) 
     
     keywords = extract_keywords(df['cleaned_data'].tolist())
-    print(df)
-    print(keywords)
+    
+    return{
+        "tweetsData":df.to_dict(orient='records'),
+        "keywords":keywords
+    }
 
-if __name__=="__main__":
-    mainFun()

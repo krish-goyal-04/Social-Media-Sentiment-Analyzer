@@ -15,7 +15,7 @@ semaphore = asyncio.Semaphore(MAX_CONCURRENT)
 
 async def fetch_page(session,query,cursor=None):
     async with semaphore:
-        params = {"query":query,"queryType":"Latest"}
+        params = {"query":query,"queryType":"Top"}
         if cursor:
             params['cursor'] = cursor
 
