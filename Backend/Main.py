@@ -3,23 +3,20 @@ from Sentiment_Analysis import sentiment_analyzer
 from Text_Cleaning import clean_text
 from better_profanity import profanity
 import pandas as pd
+from Fetch_Tweets import fetch_tweets
+import asyncio
 
-
-tweets = [
-    "Covid cases are increasing fast!",
-    "I love the new iPhone.",
-    "This weather is terrible today."
-]
-
+query = "AI"
 def mainFun():
-    df = pd.DataFrame()
-    df['data'] = tweets
+    tweets = asyncio.run(fetch_tweets(query,max_tweets=100))
+    df = pd.DataFrame(tweets)
+    #df['text'] = tweets
 
-    df['profanity_flag'] = df['data'].apply(lambda x: profanity.contains_profanity(str(x)))
+    df['profanity_flag'] = df['text'].apply(lambda x: profanity.contains_profanity(str(x)))
 
-    df['cleaned_data'] = df['data'].apply(clean_text)
+    df['cleaned_data'] = df['text'].apply(clean_text)
 
-    df['indivisual_sentiment'] = df['cleaned_data'].apply(sentiment_analyzer) 
+    df['individual_sentiment'] = df['cleaned_data'].apply(sentiment_analyzer) 
     
     keywords = extract_keywords(df['cleaned_data'].tolist())
     print(df)

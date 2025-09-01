@@ -1,44 +1,89 @@
-import requests
+import asyncio
+import aiohttp
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+API_KEY = os.getenv('API_KEY')
+URL = "https://api.twitterapi.io/twitter/tweet/advanced_search"
+HEADERS = {"X-API-Key": API_KEY}
+
+MAX_CONCURRENT = 10
+REQUEST_PER_SECOND = 10
+semaphore = asyncio.Semaphore(MAX_CONCURRENT)
+
+async def fetch_page(session,query,cursor=None):
+    async with semaphore:
+        params = {"query":query,"queryType":"Latest"}
+        if cursor:
+            params['cursor'] = cursor
+
+        await asyncio.sleep(1/REQUEST_PER_SECOND)
+
+        async with session.get(URL,headers=HEADERS,params=params) as resp:
+            if resp.status!=200:
+                print(f"Error{resp.status}")
+                return [],None
+            
+            data = await resp.json()
+
+            tweets = []
+            for tweet in data.get("tweets",[]):
+                if len(tweet.get("text"))>=30:
+                    tweets.append({
+                        "id":tweet.get("id"),
+                        "url":tweet.get("url"),
+                        "text":tweet.get("text",""),
+                        "retweetCount":tweet.get("retweetCount",0),
+                        "replyCount":tweet.get("replyCount",0),
+                        "likeCount":tweet.get("likeCount",0),
+                        "quoteCount":tweet.get("quoteCount",0),
+                        "viewCount":tweet.get("viewCount",0),
+                        "createdAt":tweet.get("createdAt",""),
+                        "authorName":tweet['author'].get("userName"),
+                        "hashtags":[h.get("text") for h in tweet.get('entities',{}).get('hashtags',[])]
+                    })
+            
+            return tweets,data.get("next_cursor")
 
 
-def fetch_tweets(query,max_tweets=1000):
 
-    url = "https://api.twitterapi.io/twitter/tweet/advanced_search"
 
-    headers = {"X-API-Key": "<api-key>"}
-
-    base_query = f"{query}"
-
-    params = {
-        "query" : base_query,
-        "queryType" : "Latest",
-    }
+async def fetch_tweets(query,max_tweets=1000):
     tweets = []
-    next_cursor = None
+    cursors = [None]
 
-    while len(tweets)<max_tweets:
-        if next_cursor:
-            params['cursor'] = next_cursor
-        response = requests.json(url=url,headers=headers,params=params)
-        data = response.json()
+    async with aiohttp.ClientSession() as session: #Using once open connection Tcp/ip and reusing it
+        while len(tweets) < max_tweets and cursors:
 
-        for tweet in data["tweets"]:
-            if len(tweet)>=30:
-                tweets.append({
-                    "id":tweet.get("id"),
-                    "url":tweet.get("url"),
-                    "text":tweet.get("text",""),
-                    "retweetCount":tweet.get("retweetCount",0),
-                    "replyCount":tweet.get("replyCount",0),
-                    "likeCount":tweet.get("likeCount",0),
-                    "quoteCount":tweet.get("quoteCount",0),
-                    "viewCount":tweet.get("viewCount",0),
-                    "createdAt":tweet.get("createdAt",""),
-                    "authorName":tweet['author'].get("userName"),
-                    "hashtags":tweet.get('entities').get('hashtags').get("text")
-                })
+            current_batch = cursors[:MAX_CONCURRENT]
+            cursors = cursors[MAX_CONCURRENT:]
+            """
+            We limit concurrency.
 
-        next_cursor = data.get('next_cursor')
-        return tweets
+            Example: If MAX_CONCURRENT=5 and cursors=[None, "abc", "def", "ghi", "jkl", "mno"]
 
+            current_batch = [None, "abc", "def", "ghi", "jkl"]
 
+            cursors = ["mno"] (remaining).
+
+            This prevents us from launching hundreds of requests at once and overloading the API.
+            """
+            tasks = [fetch_page(session,query,c) for c in current_batch]
+            results = await asyncio.gather(*tasks)
+
+            for page_tweets,next_cursor in results:
+                tweets.extend(page_tweets)
+                if next_cursor and len(tweets)<max_tweets:
+                    cursors.append(next_cursor)
+            print("Fetched Tweets")
+    
+    return tweets[:max_tweets]
+
+"""if __name__ == "__main__":
+    query = "AI"
+    results = asyncio.run(fetch_tweets(query, max_tweets=100))
+    print("\n=== Final Tweets ===")
+    for t in results:
+        print(t)"""
