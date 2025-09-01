@@ -60,20 +60,32 @@ const OverallSentiment = ()=>{
     const dominantSentiment = data.reduce((a,b)=>(a.value>b.value?a:b))
 
     return(
-        <div className="p-8 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-10 w-full max-w-5xl mx-auto">
-            <div className="space-y-2">
+        <div className="p-4 mt-10 flex flex-col md:flex-row items-center justify-center gap-10 w-full max-w-7xl mx-auto">
+            <div className="flex-1 space-y-2">
                 <h1 className="text-4xl text-white font-bold">Overall Sentiment</h1>
-                <h2 className="text-5xl text-white font-bold" style={{color:COLORS[dominantSentiment.name.toLowerCase()]}}>
+                <h2 className="text-5xl text-white font-bold mb-10" style={{color:COLORS[dominantSentiment.name.toLowerCase()]}}>
                     {dominantSentiment.name.charAt(0).toUpperCase()+dominantSentiment.name.slice(1)}
                 </h2>
-                <Button
-                   variant="outline"
-                   onClick={()=>setChartType(chartType=="Bar"?"Pie":"Bar")}
-                >
-                    Switch to {chartType=="Bar"?"Pie":"Bar"}
-                </Button>
+                <div className="bg-white rounded-3xl w-25 h-8 flex items-center justify-between px-1 text-sm">
+                    <h1
+                        onClick={() => setChartType("Bar")}
+                        className={`cursor-pointer px-3 py-1  rounded-xl transition-colors duration-400 ease-in-out ${
+                        chartType === "Bar" ? "bg-gray-800 text-white" : "text-black"
+                        }`}
+                    >
+                        Bar
+                    </h1>
+                    <h1
+                        onClick={() => setChartType("Pie")}
+                        className={`cursor-pointer px-3 py-1 rounded-xl transition-colors duration-400 ease-in-out ${
+                        chartType === "Pie" ? "bg-gray-800 text-white" : "text-black"
+                        }`}
+                    >
+                        Pie
+                    </h1>
+                </div>
             </div>
-            <div className="w-full md:w-2/3 h-80 p-4 rounded-xl shadow-inner">
+            <div className="flex-[2] h-80 p-4 ">
                 <OverallSentimentChart COLORS={COLORS} data={data} chart={chartType} />
             </div>
         </div>

@@ -3,8 +3,8 @@ import {XAxis,YAxis,Tooltip,Bar,BarChart,PieChart,Pie,Cell,Legend,ResponsiveCont
 
 const OverallSentimentChart = ({data,chart,COLORS})=>{
     return(
-        <div className="w-[50%] h-80">
-            <ResponsiveContainer width="100%" height="100%">
+        <div className="w-full h-70 flex justify-center">
+            <ResponsiveContainer width="50%" height="100%" className="">
                 {chart==="Bar"?(
                     <BarChart data={data}>
                         <XAxis dataKey="name" stroke="#fff" />
@@ -22,7 +22,7 @@ const OverallSentimentChart = ({data,chart,COLORS})=>{
                             data={data}
                             cx="50%"
                             cy="50%"
-                            outerRadius={90}
+                            outerRadius={100}
                             label
                             dataKey="value"
                         >
