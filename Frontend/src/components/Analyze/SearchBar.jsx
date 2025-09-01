@@ -27,10 +27,10 @@ const SearchBar = ()=>{
             initial={{opacity:0}}
             animate={{opacity:1}}
             transition={{duration:1}}
-            className="flex p-10 space-x-3 items-center ">
+            className="flex p-10 space-x-3 ">
             <Input 
                 placeholder="Enter a Topic" 
-                className="rounded-2xl max-w-lg bg-gray-200  placeholder:text-gray-700 shadow-2xl h-10"
+                className="rounded-2xl max-w-2xl bg-gray-200  placeholder:text-gray-700 shadow-2xl h-10"
                 value={query}
                 onChange = {(e)=>setQuery(e.target.value)}
             />
