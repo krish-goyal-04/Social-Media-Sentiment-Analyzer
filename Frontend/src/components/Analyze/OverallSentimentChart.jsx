@@ -4,7 +4,7 @@ import {XAxis,YAxis,Tooltip,Bar,BarChart,PieChart,Pie,Cell,Legend,ResponsiveCont
 const OverallSentimentChart = ({data,chart,COLORS})=>{
     return(
         <div className="w-full h-70 flex justify-center">
-            <ResponsiveContainer width="50%" height="100%" className="">
+            <ResponsiveContainer width="100%" height="100%" className="">
                 {chart==="Bar"?(
                     <BarChart data={data}>
                         <XAxis dataKey="name" stroke="#fff" />

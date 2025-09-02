@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {Button} from "../ui/button"
 import OverallSentimentChart from "./OverallSentimentChart";
+import SentimentBar from "./SentimentBar";
 
 const demoSentiment = [
   { label: "positive", confidence: 0.92 },
@@ -21,25 +22,27 @@ const COLORS = {
   neutral: "#6366f1"
 };
 
-const OverallSentiment = ()=>{
+const OverallSentiment = ({results})=>{
 
     const [chartType,setChartType] = useState('Bar')
+
+    const tweets = results.tweetsData
 
     let pos = {score:0,count:0}
     let neg = {score:0,count:0}
     let neut = {score:0,count:0}
 
-    demoSentiment.forEach((item)=>{
-        if(item.label === 'positive'){
-            pos.score+=item.confidence;
+    tweets.forEach((item)=>{
+        if(item?.individual_sentiment?.label === 'positive'){
+            pos.score+=item?.individual_sentiment?.confidence;
             pos.count++;
         }
-        else if(item.label === 'negative'){
-            neg.score+=item.confidence;
+        else if(item?.individual_sentiment?.label === 'negative'){
+            neg.score+=item?.individual_sentiment?.confidence;
             neg.count++;
         }
-        else if(item.label === 'neutral'){
-            neut.score+=item.confidence;
+        else if(item?.individual_sentiment?.label === 'neutral'){
+            neut.score+=item?.individual_sentiment?.confidence;
             neut.count++;
         }
     })
@@ -60,8 +63,8 @@ const OverallSentiment = ()=>{
     const dominantSentiment = data.reduce((a,b)=>(a.value>b.value?a:b))
 
     return(
-        <div className="p-4 mt-10 flex flex-col md:flex-row items-center justify-center gap-10 w-full max-w-7xl mx-auto">
-            <div className="flex-1 space-y-2">
+        <div className="p-4 mt-10  flex flex-col md:flex-row items-center justify-center gap-10 w-full max-w-8xl">
+            <div className="flex-1 space-y-2 mr-15">
                 <h1 className="text-4xl text-white font-bold">Overall Sentiment</h1>
                 <h2 className="text-5xl text-white font-bold mb-10" style={{color:COLORS[dominantSentiment.name.toLowerCase()]}}>
                     {dominantSentiment.name.charAt(0).toUpperCase()+dominantSentiment.name.slice(1)}
@@ -85,8 +88,11 @@ const OverallSentiment = ()=>{
                     </h1>
                 </div>
             </div>
-            <div className="flex-[2] h-80 p-4 ">
+            <div className="flex-2 h-80 p-4 ">
                 <OverallSentimentChart COLORS={COLORS} data={data} chart={chartType} />
+            </div>
+            <div className="flex-3 p-5">
+                <SentimentBar sentimentIndex={sentimentIndex}/>
             </div>
         </div>
     )

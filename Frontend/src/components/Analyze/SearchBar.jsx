@@ -3,6 +3,7 @@ import { Search } from 'lucide-react';
 import {Button} from "../ui/button"
 import { motion } from "framer-motion";
 import { useState } from "react";
+import OverallSentiment from "./OverallSentiment";
 
 const SearchBar = ()=>{
 
@@ -21,12 +22,13 @@ const SearchBar = ()=>{
         setResults(data)
         setQuery("")
     }
-
+    
     return(
-        <motion.div 
-            initial={{opacity:0}}
-            animate={{opacity:1}}
-            transition={{duration:1}}
+        <div>
+            <motion.div 
+            initial={{opacity:0,y:50}}
+            animate={{opacity:1,y:0}}
+            transition={{duration:0.75}}
             className="flex p-8 space-x-3 justify-center ">
             <Input 
                 placeholder="Enter a Topic" 
@@ -39,6 +41,9 @@ const SearchBar = ()=>{
                 onClick = {handleSearch}
             ><Search /></Button>
         </motion.div>
+        {results && <OverallSentiment results={results} />}
+        </div>
+        
     )
 }
 export default SearchBar
