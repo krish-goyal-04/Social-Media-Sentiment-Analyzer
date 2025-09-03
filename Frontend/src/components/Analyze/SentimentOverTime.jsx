@@ -29,7 +29,7 @@ const SentimentOverTime = ({tweets})=>{
 
     return(
         <div className='p-4 w-full h-80'>
-            <div className='flex justify-between mb-8 mx-3'>
+            <div className='flex justify-between mb-8 mr-3'>
                  <h1 className="text-4xl text-white font-bold">Sentiment Over Time</h1>
                 <div className="bg-white rounded-3xl w-30 h-8 flex items-center justify-between px-1 text-sm">
                     <h1

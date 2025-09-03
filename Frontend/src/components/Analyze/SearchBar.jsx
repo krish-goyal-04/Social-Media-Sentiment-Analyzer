@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import OverallSentiment from "./OverallSentiment";
 import SentimentOverTime from "./SentimentOverTime"
+import EngagementData from "./EngagementData";
 const SearchBar = ()=>{
 
     const [query,setQuery] = useState("")
@@ -43,8 +44,9 @@ const SearchBar = ()=>{
         </motion.div>
         {results && (
             <>
-            <OverallSentiment results={results} />
-            <SentimentOverTime tweets={results.tweetsData} />
+                <OverallSentiment results={results} />
+                <SentimentOverTime tweets={results.tweetsData} />
+                <EngagementData results={results} />
             </>
              )}
         </div>
