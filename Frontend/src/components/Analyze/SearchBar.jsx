@@ -41,7 +41,7 @@ const SearchBar = ()=>{
                 onClick = {handleSearch}
             ><Search /></Button>
         </motion.div>
-        {results && <OverallSentiment results={results} />}
+        {results && <OverallSentiment results={results} /> && <SentimentOverTime tweets={results.tweetsData} />}
         </div>
         
     )

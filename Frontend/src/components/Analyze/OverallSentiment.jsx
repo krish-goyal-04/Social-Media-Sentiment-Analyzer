@@ -3,19 +3,6 @@ import {Button} from "../ui/button"
 import OverallSentimentChart from "./OverallSentimentChart";
 import SentimentBar from "./SentimentBar";
 
-const demoSentiment = [
-  { label: "positive", confidence: 0.92 },
-  { label: "negative", confidence: 0.65 },
-  { label: "neutral",  confidence: 0.88 },
-  { label: "positive", confidence: 0.75 },
-  { label: "negative", confidence: 0.80 },
-  { label: "positive", confidence: 0.60 },
-  { label: "neutral",  confidence: 0.70 },
-  { label: "positive", confidence: 0.95 },
-  { label: "negative", confidence: 0.55 },
-  { label: "neutral",  confidence: 0.90 },
-];
-
 const COLORS = {
   positive: "#10b981",
   negative: "#f43f5e",
