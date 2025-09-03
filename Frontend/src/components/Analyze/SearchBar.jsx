@@ -4,7 +4,7 @@ import {Button} from "../ui/button"
 import { motion } from "framer-motion";
 import { useState } from "react";
 import OverallSentiment from "./OverallSentiment";
-
+import SentimentOverTime from "./SentimentOverTime"
 const SearchBar = ()=>{
 
     const [query,setQuery] = useState("")
@@ -41,7 +41,12 @@ const SearchBar = ()=>{
                 onClick = {handleSearch}
             ><Search /></Button>
         </motion.div>
-        {results && <OverallSentiment results={results} /> && <SentimentOverTime tweets={results.tweetsData} />}
+        {results && (
+            <>
+            <OverallSentiment results={results} />
+            <SentimentOverTime tweets={results.tweetsData} />
+            </>
+             )}
         </div>
         
     )

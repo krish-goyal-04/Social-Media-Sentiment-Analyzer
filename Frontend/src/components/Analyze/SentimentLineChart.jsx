@@ -2,8 +2,8 @@ import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend, Responsi
 
 const SentimentLineChart = ({data})=>{
     return(
-        <ResponsiveContainer width="100%" height="100%" >
-            <LineChart width={600} height={300} data={data}>
+        <ResponsiveContainer width="100%" height={400} >
+            <LineChart width={600} height={400} data={data}>
                 <CartesianGrid stroke="#ccc"/>
                 <XAxis dataKey="timeLabel" />
                 <YAxis domain={[0,1]} ticks={[0,0.5,1]} />
