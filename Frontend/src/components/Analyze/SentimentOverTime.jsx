@@ -3,6 +3,11 @@ import SentimentLineChart from './SentimentLineChart'
 import SentimentAreaChart from './SentimentAreaChart'
 import { useState } from 'react'
 
+const formatDate = (str)=>{
+    const date = parse(str,"yyyy-MM-dd HH:mm",new Date())
+    return format(date, "d MMM, h a")
+}
+
 const SentimentOverTime = ({tweets})=>{
     const data = {}
     const[chartType,setChartType] = useState('Area')
@@ -13,7 +18,7 @@ const SentimentOverTime = ({tweets})=>{
         const sentiment = tweet.individual_sentiment.label
         const confidence = tweet.individual_sentiment.confidence
         if(!data[timeLabel]){
-            data[timeLabel] = {timeLabel,positive:0,negative:0,neutral:0,count:0}
+            data[timeLabel] = {time:hour,timeLabel,positive:0,negative:0,neutral:0,count:0}
         }
         data[timeLabel][sentiment]=confidence;
         data[timeLabel].count++;
@@ -21,11 +26,12 @@ const SentimentOverTime = ({tweets})=>{
     console.log(data)
 
     const chartData = Object.values(data).map((d)=>({
+        ...d,
         timeLabel:d.timeLabel,
         positive:d.positive/d.count,
         negative:d.negative/d.count,
         neutral:d.neutral/d.count
-    })).sort((a,b)=>new Date(a.timeLabel)-new Date(b.timeLabel))
+    })).sort((a,b)=>a.time-b.time)
 
     return(
         <div className='p-4 w-full h-80'>
@@ -46,7 +52,7 @@ const SentimentOverTime = ({tweets})=>{
                     >Line</h1>
                 </div>
             </div>
-           {chartType==='Line'?(<SentimentLineChart data={chartData} />):(<SentimentAreaChart data={chartData} />)}
+           {chartType==='Line'?(<SentimentLineChart formatDate={formatDate} data={chartData} />):(<SentimentAreaChart formatDate={formatDate} data={chartData} />)}
            
            
         </div>

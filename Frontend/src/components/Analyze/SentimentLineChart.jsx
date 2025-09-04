@@ -1,11 +1,11 @@
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, Legend, ResponsiveContainer } from "recharts";
 
-const SentimentLineChart = ({data})=>{
+const SentimentLineChart = ({data,formatDate})=>{
     return(
         <ResponsiveContainer width="100%" height={400} >
             <LineChart width={600} height={400} data={data}>
                 <CartesianGrid stroke="#ccc"/>
-                <XAxis dataKey="timeLabel" />
+                <XAxis dataKey="timeLabel" tick={{ fill: "#ccc" }} tickFormatter={formatDate} />
                 <YAxis domain={[0,1]} ticks={[0,0.5,1]} />
                 <Tooltip />
                 <Legend />

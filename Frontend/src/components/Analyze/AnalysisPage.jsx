@@ -6,48 +6,44 @@ import EngagementData from "./EngagementData";
 const sampleResults = {
   tweetsData: [
     {
-      id: "1",
-      authorName: "SonuSood",
-      likeCount: 1200,
-      retweetCount: 350,
-      replyCount: 95,
-      quoteCount: 40,
-      viewCount: 15000,
-      createdAt: "Mon Sep 01 06:31:45 +0000 2025",
-      text: "We stand together in tough times. Punjab will rise again!",
+      createdAt: "Mon Sep 02 14:23:45 +0000 2025",
+      likeCount: 120,
+      retweetCount: 30,
+      replyCount: 15,
+      viewCount: 1500,
+      quoteCount:45
     },
     {
-      id: "2",
-      authorName: "TechGuru",
-      likeCount: 890,
-      retweetCount: 210,
-      replyCount: 75,
-      quoteCount: 25,
-      viewCount: 11000,
-      createdAt: "Mon Sep 01 09:12:33 +0000 2025",
-      text: "AI will reshape the future — and it’s happening faster than you think!",
+      createdAt: "Mon Sep 02 15:10:12 +0000 2025",
+      likeCount: 90,
+      retweetCount: 20,
+      replyCount: 10,
+      viewCount: 1200,
+      quoteCount:10
     },
     {
-      id: "3",
-      authorName: "MovieBuff",
-      likeCount: 560,
-      retweetCount: 130,
+      createdAt: "Mon Sep 02 15:45:02 +0000 2025",
+      likeCount: 200,
+      retweetCount: 50,
+      replyCount: 25,
+      viewCount: 2500,
+      quoteCount:500
+    },
+    {
+      createdAt: "Mon Sep 02 16:20:30 +0000 2025",
+      likeCount: 75,
+      retweetCount: 15,
+      replyCount: 8,
+      viewCount: 1000,
+      quoteCount:400
+    },
+    {
+      createdAt: "Mon Sep 02 17:05:11 +0000 2025",
+      likeCount: 300,
+      retweetCount: 80,
       replyCount: 40,
-      quoteCount: 18,
-      viewCount: 8000,
-      createdAt: "Mon Sep 01 12:45:21 +0000 2025",
-      text: "Just watched an incredible film — highly recommend it!",
-    },
-    {
-      id: "4",
-      authorName: "FoodieLife",
-      likeCount: 2300,
-      retweetCount: 780,
-      replyCount: 210,
-      quoteCount: 65,
-      viewCount: 20000,
-      createdAt: "Mon Sep 01 16:11:02 +0000 2025",
-      text: "This new street food spot is insane 🤯🔥",
+      viewCount: 4000,
+      quoteCount:200
     },
   ],
 };
@@ -58,12 +54,10 @@ const AnalysisPage = ()=>{
             <div className="mb-10">
                 <SearchBar />
             </div>
-            {/*<div className="p-6 md:p-10 space-y-3 mx-15">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl text-indigo-400 dark:text-gray-100 text-center font-extrabold">
-                    Sentiment Analysis Overview
-                </h2>
+            {<div className="p-6 md:p-10 space-y-3 mx-15">
+                
                 {<EngagementData results={sampleResults} />}
-            </div>*/}
+            </div>}
                 
         </div>
     )

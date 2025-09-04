@@ -11,7 +11,7 @@ const ToolTipComponent = ({text})=>{
                 />
             </TooltipTrigger>
             <TooltipContent>
-                <p>{text}</p>
+                <p className="text-lg">{text}</p>
             </TooltipContent>
         </Tooltip>
     )

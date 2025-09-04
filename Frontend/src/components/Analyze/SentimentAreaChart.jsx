@@ -2,12 +2,12 @@ import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer
 } from "recharts";
 
-const SentimentAreaChart = ({ data }) => {
+const SentimentAreaChart = ({ data,formatDate }) => {
   return (
     <ResponsiveContainer width="100%" height={400}>
       <AreaChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="#444" />
-        <XAxis dataKey="timeLabel" />
+        <XAxis dataKey="timeLabel" tick={{ fill: "#ccc" }} tickFormatter={formatDate} />
         <YAxis domain={[0, 1]} ticks={[0, 0.25, 0.5, 0.75, 1]} />
         <Tooltip />
         <Legend />
