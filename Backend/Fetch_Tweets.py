@@ -85,7 +85,7 @@ async def fetch_tweets(query,max_tweets=1000):
                     cursors.append(next_cursor)
             print(f"Fetched{len(tweets)} so far")
     
-    return tweets[:max_tweets]
+    return tweets
 
 """if __name__ == "__main__":
     query = "AI"

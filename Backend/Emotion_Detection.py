@@ -1,6 +1,6 @@
 from transformers import pipeline
 
-pipe = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-emotion-multilabel-latest", return_all_scores=True)
+pipe = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-emotion-multilabel-latest", top_k=None, truncation=True,padding=True,max_length=512 )
 
 """text = [
     "I love this product, it's amazing! ❤️",

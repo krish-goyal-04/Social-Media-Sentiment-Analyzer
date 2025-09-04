@@ -73,7 +73,7 @@ const EngagementData = ({results})=>{
             </div>
             <div className="flex justify-between">
                 <div className="flex">
-                    <h3 className="text-2xl text-white font-semibold mr-10" >Charts</h3>
+                    <h3 className="text-2xl text-white font-semibold mr-10" >Metrics Chart</h3>
                     <div className="bg-white rounded-3xl w-25 h-8 flex items-center justify-between px-1 text-sm">
                         <h1
                             onClick={()=>{setShowChart('Yes'); setChartCategory('Likes')}}
@@ -107,7 +107,7 @@ const EngagementData = ({results})=>{
             <div>
                 {showChart === "Yes" && (
                     <>
-                    <h1 className="text-3xl text-white font-semibold mb-6 mt-10">
+                    <h1 className="text-2xl text-white font-semibold mb-6 mt-10 text-center">
                         {chartCategory} Over Time
                     </h1>
                     <EngagementChart

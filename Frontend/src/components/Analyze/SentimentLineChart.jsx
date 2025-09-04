@@ -4,7 +4,7 @@ const SentimentLineChart = ({data,formatDate})=>{
     return(
         <ResponsiveContainer width="100%" height={400} >
             <LineChart width={600} height={400} data={data}>
-                <CartesianGrid stroke="#ccc"/>
+                <CartesianGrid stroke="#ccc" strokeDasharray="3 3"/>
                 <XAxis dataKey="timeLabel" tick={{ fill: "#ccc" }} tickFormatter={formatDate} />
                 <YAxis domain={[0,1]} ticks={[0,0.5,1]} />
                 <Tooltip />
