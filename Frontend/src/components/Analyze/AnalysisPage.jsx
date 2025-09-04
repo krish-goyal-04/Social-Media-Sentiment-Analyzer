@@ -54,10 +54,10 @@ const AnalysisPage = ()=>{
             <div className="mb-10">
                 <SearchBar />
             </div>
-            {<div className="p-6 md:p-10 space-y-3 mx-15">
+            {/*<div className="p-6 md:p-10 space-y-3 mx-15">
                 
                 {<EngagementData results={sampleResults} />}
-            </div>}
+            </div>*/}
                 
         </div>
     )
