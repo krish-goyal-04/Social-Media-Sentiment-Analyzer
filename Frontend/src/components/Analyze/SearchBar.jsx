@@ -6,6 +6,7 @@ import { useState } from "react";
 import OverallSentiment from "./OverallSentiment";
 import SentimentOverTime from "./SentimentOverTime"
 import EngagementData from "./EngagementData";
+import TopTweets from "./TopTweets"
 const SearchBar = ()=>{
 
     const [query,setQuery] = useState("")
@@ -50,6 +51,7 @@ const SearchBar = ()=>{
                 <OverallSentiment results={results} />
                 <SentimentOverTime tweets={results.tweetsData} />
                 <EngagementData results={results} />
+                <TopTweets results={results} />
             </>
              )}
         </div>
