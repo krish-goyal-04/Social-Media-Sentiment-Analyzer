@@ -7,6 +7,7 @@ import OverallSentiment from "./OverallSentiment";
 import SentimentOverTime from "./SentimentOverTime"
 import EngagementData from "./EngagementData";
 import TopTweets from "./TopTweets"
+import EmotionAnalysis from "./EmotionAnalysis";
 const SearchBar = ()=>{
 
     const [query,setQuery] = useState("")
@@ -52,6 +53,7 @@ const SearchBar = ()=>{
                 <SentimentOverTime tweets={results.tweetsData} />
                 <EngagementData results={results} />
                 <TopTweets results={results} />
+                <EmotionAnalysis results={results} />
             </>
              )}
         </div>
