@@ -1,9 +1,10 @@
 import EnagagementCard from "./EngagementCards"
-import { Heart, Repeat2, View, Info, MessageSquareReply } from "lucide-react";
+import { Heart, Repeat2, View, Info, MessageSquareReply, BarChart3, TrendingUp, Activity } from "lucide-react";
 import ToolTipComponent from "./ToolTipComponent";
 import {parse,format,startOfHour} from 'date-fns'
 import EngagementChart from "./EngagementChart";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 const chartItems = ['Likes','Shares','Replies','Views']
 
@@ -11,7 +12,6 @@ const formatDate = (str)=>{
     const date = parse(str, "yyyy-MM-dd HH:mm",new Date())
     return format(date,"d MMM, h a")
 }
-
 
 const EngagementData = ({results})=>{
     const [showChart,setShowChart] = useState("No")
@@ -51,7 +51,7 @@ const EngagementData = ({results})=>{
         }
         
     })
-    console.log(engagementData)
+    
     const avgLikes = Math.round(likes/count)
     const avgShares =  Math.round(shares/count)
     const avgViews =  Math.round(views/count)
@@ -66,64 +66,128 @@ const EngagementData = ({results})=>{
     ]
 
     return(
-        <div className="mt-50 p-4 ">
-            <h1 className="text-4xl text-white font-bold text-center">Engagement Metrics <ToolTipComponent text={`Based on ${count} Tweets`} /></h1>
-            <div className="w-full grid grid-cols-1 sm:grid-cols-4 gap-6 p-6">
-                {items.map((item,ind)=> <EnagagementCard key={ind} {...item}/>)}
-            </div>
-            <div className="flex justify-between">
-                <div className="flex">
-                    <h3 className="text-2xl text-white font-semibold mr-10" >Metrics Chart</h3>
-                    <div className="bg-white rounded-3xl w-25 h-8 flex items-center justify-between px-1 text-sm">
-                        <h1
-                            onClick={()=>{setShowChart('Yes'); setChartCategory('Likes')}}
-                            className={`cursor-pointer px-3 py-1  rounded-xl transition-colors duration-400 ease-in-out ${
-                                showChart === "Yes" ? "bg-gray-800 text-white" : "text-black"
-                            }`}
-                        >Yes</h1>
-                        <h1
-                            onClick={()=>setShowChart('No')}
-                            className={`cursor-pointer px-3 py-1  rounded-xl transition-colors duration-400 ease-in-out ${
-                                showChart === "No" ? "bg-gray-800 text-white" : "text-black"
-                            }`}
-                        >No</h1>
+        <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="w-full"
+        >
+            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 shadow-2xl">
+                <div className="text-center mb-8">
+                    <div className="flex items-center justify-center gap-3 mb-4">
+                        <Activity className="text-purple-400" size={32} />
+                        <h1 className="text-3xl md:text-4xl font-bold text-white">Engagement Metrics</h1>
+                        <ToolTipComponent text={`Based on ${count} Tweets`} />
+                    </div>
+                    <p className="text-gray-300">Understanding how audiences interact with content</p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                    {items.map((item,ind)=> <EnagagementCard key={ind} {...item} index={ind}/>)}
+                </div>
+
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                    className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-2xl p-6 mb-8 border border-white/20"
+                >
+                    <div className="flex items-center justify-center gap-4">
+                        <TrendingUp className="text-green-400" size={24} />
+                        <div className="text-center">
+                            <div className="text-3xl font-bold text-white">{engagementRate.toFixed(2)}%</div>
+                            <div className="text-gray-300 text-sm">Overall Engagement Rate</div>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Chart Controls */}
+                <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8">
+                    <div className="flex items-center gap-4">
+                        <BarChart3 className="text-blue-400" size={24} />
+                        <h3 className="text-2xl text-white font-semibold">Metrics Chart</h3>
+                    </div>
+                    
+                    <div className="flex flex-col sm:flex-row gap-4">
+                        <div className="bg-white/20 rounded-2xl p-1 flex">
+                            <button
+                                onClick={()=>{setShowChart('Yes'); setChartCategory('Likes')}}
+                                className={`px-4 py-2 rounded-xl transition-all duration-300 ${
+                                    showChart === "Yes" 
+                                        ? "bg-white text-gray-900 shadow-lg" 
+                                        : "text-white hover:bg-white/10"
+                                }`}
+                            >
+                                Show Chart
+                            </button>
+                            <button
+                                onClick={()=>setShowChart('No')}
+                                className={`px-4 py-2 rounded-xl transition-all duration-300 ${
+                                    showChart === "No" 
+                                        ? "bg-white text-gray-900 shadow-lg" 
+                                        : "text-white hover:bg-white/10"
+                                }`}
+                            >
+                                Hide Chart
+                            </button>
+                        </div>
+
+                        {showChart === "Yes" && (
+                            <motion.div 
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="bg-white/20 rounded-2xl p-1 flex flex-wrap gap-1"
+                            >
+                                {chartItems.map((item,ind)=>(
+                                    <button
+                                        key={ind}
+                                        onClick={()=>{setChartCategory(`${item}`)}}
+                                        className={`px-3 py-2 rounded-xl transition-all duration-300 text-sm ${
+                                            chartCategory === `${item}` 
+                                                ? "bg-white text-gray-900 shadow-lg" 
+                                                : "text-white hover:bg-white/10"
+                                        }`}
+                                    >
+                                        {item}
+                                    </button>
+                                ))}
+                            </motion.div>
+                        )}
                     </div>
                 </div>
-                <div >
-                    {showChart==="Yes" && (
-                        <div className="bg-white rounded-3xl w-70 h-8 flex items-center justify-between px-1 text-sm">
-                        {chartItems.map((item,ind)=>(<h1
-                            key={ind}
-                            onClick={()=>{setChartCategory(`${item}`)}}
-                            className={`cursor-pointer px-3 py-1  rounded-xl transition-colors duration-400 ease-in-out ${
-                                chartCategory === `${item}` ? "bg-gray-800 text-white" : "text-black"
-                            }`}
-                        >{item}</h1>))}
-                    </div>)
 
-                    }
+                <div className="space-y-12">
+                    {showChart === "Yes" && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 30 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="bg-white/5 rounded-2xl p-6"
+                        >
+                            <h2 className="text-2xl text-white font-semibold mb-6 text-center">
+                                {chartCategory} Over Time
+                            </h2>
+                            <EngagementChart
+                                dataKey={chartCategory}
+                                data={Object.values(engagementData).sort((a,b)=>a.time - b.time)}
+                            />
+                        </motion.div>
+                    )}
+                    
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="bg-white/5 rounded-2xl p-6"
+                    >
+                        <h2 className="text-2xl text-white font-semibold mb-6 text-center">
+                            Overall Engagement Over Time
+                        </h2>
+                        <EngagementChart dataKey={"engagement"} data={Object.values(engagementData)} />
+                    </motion.div>
                 </div>
             </div>
-            <div>
-                {showChart === "Yes" && (
-                    <>
-                    <h1 className="text-2xl text-white font-semibold mb-6 mt-10 text-center">
-                        {chartCategory} Over Time
-                    </h1>
-                    <EngagementChart
-                        dataKey={chartCategory}
-                        data={Object.values(engagementData).sort((a,b)=>a.time - b.time)}
-                        />
-                    </>
-                    
-                )}
-            </div>
-            <div>
-                <h1 className="text-3xl text-white font-semibold mb-6 mt-10">Engagement Over Time</h1>
-                <EngagementChart dataKey={"engagement"} data={Object.values(engagementData)} />
-            </div>
-        </div>
-        
+        </motion.div>
     )
 }
 export default EngagementData

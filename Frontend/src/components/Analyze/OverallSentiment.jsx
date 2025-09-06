@@ -1,5 +1,6 @@
 import { useState } from "react";
-import {Button} from "../ui/button"
+import { motion } from "framer-motion";
+import { BarChart3, PieChart, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import OverallSentimentChart from "./OverallSentimentChart";
 import SentimentBar from "./SentimentBar";
 
@@ -10,9 +11,7 @@ const COLORS = {
 };
 
 const OverallSentiment = ({results})=>{
-
     const [chartType,setChartType] = useState('Bar')
-
     const tweets = results.tweetsData
 
     let pos = {score:0,count:0}
@@ -36,52 +35,137 @@ const OverallSentiment = ({results})=>{
 
     let total = pos.count+neg.count+neut.count
 
-    const posAvg = (pos.score/pos.count).toFixed(2)
-    const negAvg = (neg.score/neg.count).toFixed(2)
-    const neutAvg = (neut.score/neut.count).toFixed(2)
+    const posAvg = pos.count > 0 ? (pos.score/pos.count).toFixed(2) : 0
+    const negAvg = neg.count > 0 ? (neg.score/neg.count).toFixed(2) : 0
+    const neutAvg = neut.count > 0 ? (neut.score/neut.count).toFixed(2) : 0
 
-    const sentimentIndex = ((pos.score-neg.score)/(pos.score+neg.score+neut.score)).toFixed(2)
+    const sentimentIndex = total > 0 ? ((pos.score-neg.score)/(pos.score+neg.score+neut.score)).toFixed(2) : 0
     const data = [
-    { name: "Positive", value: (pos.count / total) * 100 },
-    { name: "Negative", value: (neg.count / total) * 100 },
-    { name: "Neutral", value: (neut.count / total) * 100 },
-   ];
+        { name: "Positive", value: total > 0 ? (pos.count / total) * 100 : 0 },
+        { name: "Negative", value: total > 0 ? (neg.count / total) * 100 : 0 },
+        { name: "Neutral", value: total > 0 ? (neut.count / total) * 100 : 0 },
+    ];
+
+    const tweetStats = [
+        {label:pos,text:'Positive',data:posAvg,color:"text-green-400"},
+        {label:neg,text:'Negative',data:negAvg,color:"text-red-400"},
+        {label:neut,text:'Neutral',data:neutAvg,color:"text-blue-400"},
+    ]
 
     const dominantSentiment = data.reduce((a,b)=>(a.value>b.value?a:b))
 
+    const getSentimentIcon = (sentiment) => {
+        switch(sentiment.toLowerCase()) {
+            case 'positive': return <TrendingUp className="text-green-400" size={24} />
+            case 'negative': return <TrendingDown className="text-red-400" size={24} />
+            default: return <Minus className="text-blue-400" size={24} />
+        }
+    }
+
     return(
-        <div className="p-4 mt-10  flex flex-col md:flex-row items-center justify-center gap-10 w-full max-w-8xl">
-            <div className="flex-1 space-y-2 mr-15">
-                <h1 className="text-4xl text-white font-bold">Overall Sentiment</h1>
-                <h2 className="text-5xl text-white font-bold mb-10" style={{color:COLORS[dominantSentiment.name.toLowerCase()]}}>
-                    {dominantSentiment.name.charAt(0).toUpperCase()+dominantSentiment.name.slice(1)}
-                </h2>
-                <div className="bg-white rounded-3xl w-25 h-8 flex items-center justify-between px-1 text-sm">
-                    <h1
-                        onClick={() => setChartType("Bar")}
-                        className={`cursor-pointer px-3 py-1  rounded-xl transition-colors duration-400 ease-in-out ${
-                        chartType === "Bar" ? "bg-gray-800 text-white" : "text-black"
-                        }`}
-                    >
-                        Bar
-                    </h1>
-                    <h1
-                        onClick={() => setChartType("Pie")}
-                        className={`cursor-pointer px-3 py-1 rounded-xl transition-colors duration-400 ease-in-out ${
-                        chartType === "Pie" ? "bg-gray-800 text-white" : "text-black"
-                        }`}
-                    >
-                        Pie
-                    </h1>
+        <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="w-full"
+        >
+            <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 border border-white/20 shadow-2xl">
+                {/* Header */}
+                <div className="text-center mb-8">
+                    <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Overall Sentiment Analysis</h1>
+                    <p className="text-gray-300 text-md">Understanding the general mood across all analyzed content</p>
                 </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+                    <motion.div 
+                        initial={{ opacity: 0, x: -30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="text-center space-y-6"
+                    >
+                        <div className="space-y-4">
+                            <div className="flex items-center justify-center gap-3">
+                                {getSentimentIcon(dominantSentiment.name)}
+                                <h2 className="text-2xl md:text-3xl font-bold text-white">
+                                    {dominantSentiment.name}
+                                </h2>
+                            </div>
+                            <div 
+                                className="text-4xl md:text-5xl font-bold"
+                                style={{color: COLORS[dominantSentiment.name.toLowerCase()]}}
+                            >
+                                {dominantSentiment.value.toFixed(1)}%
+                            </div>
+                            <p className="text-gray-300 text-md">
+                                {dominantSentiment.name} sentiment dominates the conversation
+                            </p>
+                        </div>
+
+                        <div className="bg-white/20 rounded-2xl p-1 flex">
+                            <button
+                                onClick={() => setChartType("Bar")}
+                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
+                                    chartType === "Bar" 
+                                        ? "bg-white text-gray-900 shadow-lg" 
+                                        : "text-white hover:bg-white/10"
+                                }`}
+                            >
+                                <BarChart3 size={16} />
+                                Bar
+                            </button>
+                            <button
+                                onClick={() => setChartType("Pie")}
+                                className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 rounded-xl transition-all duration-300 ${
+                                    chartType === "Pie" 
+                                        ? "bg-white text-gray-900 shadow-lg" 
+                                        : "text-white hover:bg-white/10"
+                                }`}
+                            >
+                                <PieChart size={16} />
+                                Pie
+                            </button>
+                        </div>
+                    </motion.div>
+
+                    <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="lg:col-span-1"
+                    >
+                        <div className="bg-white/5 rounded-2xl p-6 h-80 flex items-center justify-center">
+                            <OverallSentimentChart COLORS={COLORS} data={data} chart={chartType} />
+                        </div>
+                    </motion.div>
+
+                    <motion.div 
+                        initial={{ opacity: 0, x: 30 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.4 }}
+                        className="lg:col-span-1"
+                    >
+                        <div className="bg-white/5 rounded-2xl p-6 h-80 flex items-center justify-center">
+                            <SentimentBar sentimentIndex={sentimentIndex}/>
+                        </div>
+                    </motion.div>
+                </div>
+
+                <motion.div 
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8"
+                >
+                    {tweetStats.map((item,index)=>(
+                        <div key={index} className="bg-white/5 rounded-xl p-4 text-center">
+                            <div className={`text-2xl font-bold mb-1 ${item.color}`} >{item.label.count}</div>
+                            <div className="text-sm text-gray-300">{item.text} Tweets</div>
+                            <div className="text-xs text-gray-400 mt-1">Avg Confidence: {item.data}</div>
+                        </div>
+                    ))}
+                </motion.div>
             </div>
-            <div className="flex-2 h-80 p-4 ">
-                <OverallSentimentChart COLORS={COLORS} data={data} chart={chartType} />
-            </div>
-            <div className="flex-3 p-5">
-                <SentimentBar sentimentIndex={sentimentIndex}/>
-            </div>
-        </div>
+        </motion.div>
     )
 }
 export default OverallSentiment

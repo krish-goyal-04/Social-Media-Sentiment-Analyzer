@@ -23,7 +23,7 @@ const EngagementChart = ({data,dataKey})=>{
             <LineChart width={600} height={400} data={chartData}>
                 <CartesianGrid stroke="#333" strokeDasharray="4 4"/>
                 <XAxis dataKey="modifiedTime" tick={{ fill: "#ccc" }} />
-                <YAxis tickFormatter={(t)=>dataKey === "engagement" ? `${t.toFixed(1)}%` : t}/>
+                <YAxis tickFormatter={(t)=>dataKey === "engagement" ? `${t.toFixed(1)}%` : t} tick={{ fill: "#ccc" }}/>
                 <Tooltip formatter={(t)=>dataKey === "engagement" ? `${t.toFixed(1)}%` : t} />
                 <Legend />
 
