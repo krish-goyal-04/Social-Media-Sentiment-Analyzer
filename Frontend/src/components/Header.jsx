@@ -3,7 +3,7 @@ import {Link, useNavigate} from "react-router-dom"
 import { AuthContext } from "../hooks/useAuthContext";
 
 
-const headerItems = [{name:"Home",link:"/"},{name:"Analyze",link:"/analyze"},{name:"My Reports",link:"/"}]
+const headerItems = [{name:"Home",link:"/"},{name:"Analyze",link:"/analyze"},{name:"My Reports",link:"/history"}]
 
 const Header = () => {
   const navigate = useNavigate()

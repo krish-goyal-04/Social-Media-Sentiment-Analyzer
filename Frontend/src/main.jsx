@@ -10,6 +10,7 @@ import RegisterUser from './components/Auth/RegisterUser.jsx'
 import AuthProvider from './hooks/useAuthContext.jsx'
 import ProtectedRoute from "./components/Auth/ProtectedRoute.jsx"
 import UserProfile from './components/UserProfile.jsx'
+import DisplayHistory from './components/History/DisplayHistory.jsx'
 
 const appRouter = createBrowserRouter([
     {
@@ -31,6 +32,10 @@ const appRouter = createBrowserRouter([
           {
             path:"/profile",
             element: <UserProfile />
+          },
+          {
+            path:"/history",
+            element: <DisplayHistory />
           }
         ]
     },

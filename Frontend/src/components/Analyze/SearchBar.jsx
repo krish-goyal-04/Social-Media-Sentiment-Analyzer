@@ -2,18 +2,46 @@ import {Input} from "../ui/input"
 import { Search, Loader2, TrendingUp, BarChart3, Heart, MessageSquare } from 'lucide-react';
 import {Button} from "../ui/button"
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
-import OverallSentiment from "./OverallSentiment";
-import SentimentOverTime from "./SentimentOverTime"
-import EngagementData from "./EngagementData";
-import TopTweets from "./TopTweets"
-import EmotionAnalysis from "./EmotionAnalysis";
+import { useContext, useEffect, useState } from "react";
+import Dashboard from "./Dashboard";
+import {AuthContext} from "../../hooks/useAuthContext"
+import saveAnalysisResult from "../../hooks/useSaveAnalysisResult";
+import QuickStats from "./QuickStats";
 
 const SearchBar = ()=>{
     const [query,setQuery] = useState("")
     const [results,setResults] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(null)
+
+    const [saveResults,setSaveResults] = useState(false)
+    const [saveSuccess,setSaveSuccess] = useState(false)
+    const [isSaved,setIsSaved] = useState(false)
+
+    const {user} = useContext(AuthContext)
+
+    useEffect(()=>{
+        if(results){
+            setIsSaved(false)
+        }
+    },[results])
+    const handleSave = async (e)=>{
+        e.preventDefault()
+        if(isSaved)return
+        try {
+            setSaveResults(true)
+            await saveAnalysisResult(user.uid,results,query)
+            setIsSaved(true)
+            setSaveSuccess(true)
+            setTimeout(()=>setSaveSuccess(false),3000)
+            setQuery("")
+        } catch (error) {
+            console.error(error)
+        }
+        finally{
+            setSaveResults(false)
+        }
+    }
 
     const handleSearch = async ()=>{
         if (!query.trim()) return;
@@ -25,7 +53,7 @@ const SearchBar = ()=>{
             const response = await fetch("http://127.0.0.1:8000/analyze/",{
                 method:"POST",
                 headers: { 'Content-Type': "application/json" },
-                body:JSON.stringify({query,max_tweets:50})
+                body:JSON.stringify({query,max_tweets:35})
             })
 
             if (!response.ok) {
@@ -34,7 +62,6 @@ const SearchBar = ()=>{
 
             const data = await response.json()
             setResults(data)
-            setQuery("")
         } catch (err) {
             setError(err.message)
         } finally {
@@ -133,40 +160,36 @@ const SearchBar = ()=>{
                             </div>
                             
                             {/* Quick Stats */}
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-                                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-                                    <BarChart3 className="text-blue-400 mx-auto mb-3" size={24} />
-                                    <div className="text-2xl font-bold text-white">{results.tweetsData?.length || 0}</div>
-                                    <div className="text-gray-300 text-sm">Posts Analyzed</div>
-                                </div>
-                                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-                                    <Heart className="text-pink-400 mx-auto mb-3" size={24} />
-                                    <div className="text-2xl font-bold text-white">
-                                        {results.tweetsData?.reduce((sum, tweet) => sum + (tweet.likeCount || 0), 0).toLocaleString()}
-                                    </div>
-                                    <div className="text-gray-300 text-sm">Total Likes</div>
-                                </div>
-                                <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-                                    <MessageSquare className="text-green-400 mx-auto mb-3" size={24} />
-                                    <div className="text-2xl font-bold text-white">
-                                        {results.tweetsData?.reduce((sum, tweet) => sum + (tweet.retweetCount || 0), 0).toLocaleString()}
-                                    </div>
-                                    <div className="text-gray-300 text-sm">Total Shares</div>
-                                </div>
-                            </div>
+                            <QuickStats results={results} />
                         </motion.div>
 
                         {/* Analysis Components */}
                         <div className="space-y-16">
-                            <OverallSentiment results={results} />
-                            <SentimentOverTime tweets={results.tweetsData} />
-                            <EngagementData results={results} />
-                            <TopTweets results={results} />
-                            <EmotionAnalysis results={results} />
+                            <Dashboard results={results} />
                         </div>
+
+                        <div className="flex justify-center items-center">
+                            <Button 
+                                variant="default" 
+                                onClick={handleSave} 
+                                disabled={saveResults||isSaved}
+                                className="bg-indigo-600 hover:bg-indigo-800 hover:scale-105 text-md ">
+                                {isSaved?"Saved":saveResults?(<span className="flex items-center gap-2">Saving<Loader2 className="animate-spin" size={24} /></span>):("Save")}</Button>
+                    </div>
                     </motion.div>
                 )}
+                
             </AnimatePresence>
+            {saveSuccess && (
+                <motion.div
+                    initial={{opacity:0}}
+                    animate={{opacity:1}}
+                    className="text-green-400 text-center mt-4"
+                >
+                    Analysis saved successfully!
+                </motion.div>
+            )
+            }
         </div>
     )
 }
