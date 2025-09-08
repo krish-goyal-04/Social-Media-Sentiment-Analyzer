@@ -10,7 +10,7 @@ URL = "https://api.twitterapi.io/twitter/tweet/advanced_search"
 HEADERS = {"X-API-Key": API_KEY}
 
 MAX_CONCURRENT = 10
-REQUEST_PER_SECOND = 10
+REQUEST_PER_SECOND = 20
 semaphore = asyncio.Semaphore(MAX_CONCURRENT)
 
 async def fetch_page(session,query,cursor=None):

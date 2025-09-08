@@ -1,7 +1,24 @@
-import {Link} from "react-router-dom"
+import { useContext } from "react";
+import {Link, useNavigate} from "react-router-dom"
+import { AuthContext } from "../hooks/useAuthContext";
+
+
 const headerItems = [{name:"Home",link:"/"},{name:"Analyze",link:"/analyze"},{name:"My Reports",link:"/"}]
 
 const Header = () => {
+  const navigate = useNavigate()
+  const {loading,user,logOut} = useContext(AuthContext)
+
+  const handleLogOut = async (e)=>{
+    e.preventDefault()
+    try {
+      await logOut()
+      console.log("Logged out successfully")
+      navigate('/login')
+    } catch (error) {
+      console.log(error.message)
+    }
+}
   return (
     <header className="bg-neutral-900 text-white shadow-2xl">
       <div className="flex justify-between items-center px-8 py-5">
@@ -21,7 +38,7 @@ const Header = () => {
         </nav>
 
         {/* Logout Button */}
-        <button className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md transition-colors duration-300">
+        <button onClick={handleLogOut} className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md transition-colors duration-300">
           Logout
         </button>
       </div>

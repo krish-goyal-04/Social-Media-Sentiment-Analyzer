@@ -36,9 +36,9 @@ const InitialDisplay = () => {
     ];
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 p-5">
+        <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-800 p-7">
             {/* Hero Section */}
-            <div className="container mx-auto px-6 py-20 ">
+            <div className="container mx-auto px-6 py-10 pb-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     {/* Left Content */}
                     <motion.div 
@@ -152,7 +152,7 @@ const InitialDisplay = () => {
                 <div className="container mx-auto px-6 py-16 ">
                     <div className="text-center mb-12">
                         <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                            Why Choose TrendPulse?
+                            Why Choose <span className="text-indigo-400">TrendPulse</span>?
                         </h2>
                         <p className="text-gray-400 text-lg max-w-2xl mx-auto">
                             Powerful features designed to give you the insights you need to succeed
