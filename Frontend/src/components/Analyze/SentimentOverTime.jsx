@@ -107,7 +107,7 @@ const SentimentOverTime = ({tweets})=>{
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3 }}
-                    className="bg-white/5 rounded-2xl p-6 h-96 flex items-center justify-center"
+                    className="bg-white/5 rounded-2xl p-6 h-110 flex items-center justify-center"
                 >
                     {chartType === 'Line' ? (
                         <SentimentLineChart formatDate={formatDate} data={chartData} />

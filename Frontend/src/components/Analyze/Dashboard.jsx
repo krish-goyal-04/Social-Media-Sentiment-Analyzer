@@ -6,7 +6,7 @@ import EmotionAnalysis from "./EmotionAnalysis"
 
 const Dashboard = ({results})=>{
     return(
-        <div>
+        <div className="space-y-10">
             <OverallSentiment results={results} />
             <SentimentOverTime tweets={results.tweetsData} />
             <EngagementData results={results} />

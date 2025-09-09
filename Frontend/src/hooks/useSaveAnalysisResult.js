@@ -1,12 +1,12 @@
 import { collection, doc, setDoc } from "firebase/firestore"
 import { db } from "../lib/firebase"
 
-const saveAnalysisResult = async (userId,result,keyword)=>{
+const saveAnalysisResult = async (userId,result,keywords)=>{
     try {
         const resultRef = doc(collection(db,"Users",userId,"AnalysisResults"))
         const data = {
             ...result,
-            input_keyword:keyword,
+            input_keyword:keywords,
             createdAt:new Date()
         }
         await setDoc(resultRef,data)

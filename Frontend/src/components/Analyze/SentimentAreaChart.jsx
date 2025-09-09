@@ -8,7 +8,7 @@ const SentimentAreaChart = ({ data,formatDate }) => {
       <AreaChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="#444" />
         <XAxis dataKey="timeLabel" tick={{ fill: "#ccc" }} tickFormatter={formatDate} />
-        <YAxis domain={[0, 1]} ticks={[0, 0.25, 0.5, 0.75, 1]} />
+        <YAxis domain={[0, 1]} ticks={[0, 0.25, 0.5, 0.75, 1]} tick={{fill:'#ccc'}} />
         <Tooltip />
         <Legend />
 

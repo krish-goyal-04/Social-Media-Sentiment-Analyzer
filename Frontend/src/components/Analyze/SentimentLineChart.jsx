@@ -6,7 +6,7 @@ const SentimentLineChart = ({data,formatDate})=>{
             <LineChart width={600} height={400} data={data}>
                 <CartesianGrid stroke="#ccc" strokeDasharray="3 3"/>
                 <XAxis dataKey="timeLabel" tick={{ fill: "#ccc" }} tickFormatter={formatDate} />
-                <YAxis domain={[0,1]} ticks={[0,0.5,1]} />
+                <YAxis domain={[0,1]} ticks={[0,0.5,1]} tick={{fill:'#ccc'}} />
                 <Tooltip />
                 <Legend />
 

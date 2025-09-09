@@ -3,11 +3,11 @@ import {Link, useNavigate} from "react-router-dom"
 import { AuthContext } from "../hooks/useAuthContext";
 
 
-const headerItems = [{name:"Home",link:"/"},{name:"Analyze",link:"/analyze"},{name:"My Reports",link:"/history"}]
+const headerItems = [{name:"Home",link:"/"},{name:"Analyze",link:"/analyze"},{name:"History",link:"/history"}]
 
 const Header = () => {
   const navigate = useNavigate()
-  const {loading,user,logOut} = useContext(AuthContext)
+  const {logOut} = useContext(AuthContext)
 
   const handleLogOut = async (e)=>{
     e.preventDefault()

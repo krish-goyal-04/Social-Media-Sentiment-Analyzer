@@ -11,6 +11,8 @@ import AuthProvider from './hooks/useAuthContext.jsx'
 import ProtectedRoute from "./components/Auth/ProtectedRoute.jsx"
 import UserProfile from './components/UserProfile.jsx'
 import DisplayHistory from './components/History/DisplayHistory.jsx'
+import Dashboard from './components/Analyze/Dashboard.jsx'
+import PrevResultDisplay from './components/History/PrevResultDisplay.jsx'
 
 const appRouter = createBrowserRouter([
     {
@@ -36,6 +38,10 @@ const appRouter = createBrowserRouter([
           {
             path:"/history",
             element: <DisplayHistory />
+          },
+          {
+            path:"/history/:id",
+            element: <PrevResultDisplay />
           }
         ]
     },

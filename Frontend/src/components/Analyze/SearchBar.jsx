@@ -74,6 +74,7 @@ const SearchBar = ()=>{
             handleSearch()
         }
     }
+    console.log(results)
     
     return(
         <div className="w-full">
