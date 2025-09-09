@@ -8,7 +8,7 @@ import { Loader2 } from "lucide-react"
 const LoginUser = ()=>{
     const {user,logInUser} = useContext(AuthContext)
     const [error,setError] = useState('')
-    const [localLoading,setloacalLoading] = useState(false)
+    const [localLoading,setLocalLoading] = useState(false)
     const [email,setEmail] = useState('')
     const [password, setPassword] = useState('')
 
@@ -30,11 +30,11 @@ const LoginUser = ()=>{
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        setloacalLoading(true)
+        setLocalLoading(true)
         setError(null)
         if(!email || !password){
             setError("Please enter both Email and Password!")
-            setloacalLoading(false)
+            setLocalLoading(false)
             return
         }
         try {
@@ -61,7 +61,7 @@ const LoginUser = ()=>{
                 setError("Login failed. Please try again");
             }
         } finally{
-            setloacalLoading(false)
+            setLocalLoading(false)
         }
     };
 

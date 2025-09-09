@@ -12,3 +12,9 @@ export const FetchCollectionData = async (userId,collnId)=>{
     const snapshot = await getDoc(ref)
     return snapshot
 }
+
+export const getUserDetails = async (userId)=>{
+    const ref = doc(db,"Users",userId)
+    const snapshot = await getDoc(ref)
+    return snapshot
+}
