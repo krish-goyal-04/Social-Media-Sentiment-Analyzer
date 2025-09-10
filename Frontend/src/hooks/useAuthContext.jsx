@@ -1,6 +1,7 @@
-import {signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,onAuthStateChanged} from "firebase/auth"
+import {signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut,onAuthStateChanged, sendPasswordResetEmail} from "firebase/auth"
 import {auth} from "../lib/firebase"
 import { useEffect,useState,useContext, createContext } from "react"
+import { saveEmail } from "./useEmailAccess"
 
 export const AuthContext = createContext(null)
 
@@ -12,6 +13,7 @@ const AuthProvider = ({children})=>{
         setLoading(true)
         try{
             const response = await createUserWithEmailAndPassword(auth,email,password)
+            await saveEmail(email)
             setUser(response.user)
             setLoading(false)
             return response
@@ -49,6 +51,18 @@ const AuthProvider = ({children})=>{
         }
     }
 
+    const forgotPassword = async(email)=>{
+        try{
+            await sendPasswordResetEmail(auth,email)
+            console.log("Reset email sent successfully")
+            return true
+        }
+        catch(error){
+            console.error("Failed to send reset password email")
+            throw error
+        }
+    }
+
     useEffect(()=>{
         const unsubscribe = onAuthStateChanged(auth,(currentUser)=>{
             setUser(currentUser)
@@ -60,7 +74,7 @@ const AuthProvider = ({children})=>{
     },[])
 
     const authValue = {
-        createUser,logInUser,logOut,loading,user
+        createUser,logInUser,logOut,loading,user,forgotPassword
     }
 
     return(

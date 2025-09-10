@@ -13,6 +13,8 @@ import UserProfile from './components/UserProfile.jsx'
 import DisplayHistory from './components/History/DisplayHistory.jsx'
 import Dashboard from './components/Analyze/Dashboard.jsx'
 import PrevResultDisplay from './components/History/PrevResultDisplay.jsx'
+import ForgotPasswordReset from './components/Auth/ForgotPasswordReset.jsx'
+import LogOutPopOver from './components/Auth/LogoutPopOver.jsx'
 
 const appRouter = createBrowserRouter([
     {
@@ -40,6 +42,10 @@ const appRouter = createBrowserRouter([
             element: <DisplayHistory />
           },
           {
+            path:"/test",
+            element:<LogOutPopOver />
+          },
+          {
             path:"/history/:id",
             element: <PrevResultDisplay />
           }
@@ -52,6 +58,10 @@ const appRouter = createBrowserRouter([
     {
       path:"/register",
       element:<RegisterUser />
+    },
+    {
+      path:"reset-password",
+      element:<ForgotPasswordReset />
     }
 
 ])

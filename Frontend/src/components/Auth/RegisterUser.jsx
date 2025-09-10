@@ -6,6 +6,7 @@ import {db} from "../../lib/firebase"
 import { setDoc,doc } from "firebase/firestore"
 import { AuthContext } from "../../hooks/useAuthContext"
 import { Loader2 } from "lucide-react"
+import { motion } from "framer-motion"
 
 const RegisterUser = ()=>{
     const [firstName,setFirstName] = useState('')
@@ -88,7 +89,10 @@ const RegisterUser = ()=>{
 
     return(
         <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black ">
-            <form 
+            <motion.form 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
             className="w-full max-w-md p-8 bg-gray-900 rounded-2xl shadow-lg border border-gray-800"
             onSubmit={handleRegister}
             >
@@ -126,7 +130,7 @@ const RegisterUser = ()=>{
                     <Link to="/login" className="text-blue-500 hover:underline">Login</Link>
                 </p>
                 
-            </form>
+            </motion.form>
         </div>
     )
 

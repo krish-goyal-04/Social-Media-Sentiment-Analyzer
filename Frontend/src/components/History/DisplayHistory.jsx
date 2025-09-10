@@ -113,9 +113,9 @@ const DisplayHistory = ()=>{
                                                         className="flex flex-col items-center space-y-4"
                                                     >
                                                         <TrendingUp className="w-16 h-16 text-gray-400" />
-                                                        <div>
+                                                        <div className="">
                                                             <p className="text-gray-300 text-lg font-medium">No analysis history yet</p>
-                                                            <p className="text-gray-400 text-sm mt-1">Run your first sentiment analysis to get started!</p>
+                                                            <p className="text-gray-400 text-sm mt-1 ">Run your first sentiment analysis to get started!</p>
                                                         </div>
                                                         <Link to="/analyze">
                                                             <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">

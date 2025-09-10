@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom"
 import {auth} from "../../lib/firebase"
 import { AuthContext } from "../../hooks/useAuthContext"
 import { Loader2 } from "lucide-react"
+import {motion} from "framer-motion"
+
 const LoginUser = ()=>{
     const {user,logInUser} = useContext(AuthContext)
     const [error,setError] = useState('')
@@ -66,8 +68,12 @@ const LoginUser = ()=>{
     };
 
     return(
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black ">
-            <form 
+        <div 
+            className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black ">
+            <motion.form 
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
                 className="w-full max-w-md p-8 bg-gray-900 rounded-2xl shadow-lg border border-gray-800"
                 onSubmit={handleLogin}
                 >
@@ -91,24 +97,35 @@ const LoginUser = ()=>{
                         />
                     ))}
                 </div>
-                <div className="flex items-center justify-center">
+                <div className="flex flex-col items-center  mx-6 ">
                     <Button
                     type="submit"
                     variant="default"
-                    className="w-[60%] mt-8 py-3 rounded-xl bg-blue-600 font-semibold text-lg hover:bg-blue-700 transition-all"
+                    className="w-full mt-8 py-3  rounded-xl bg-blue-600 font-semibold text-lg hover:bg-blue-700 cursor-pointer transition-all"
+                    disabled={localLoading}
                 >
                         {localLoading?(
-                            <p className="flex items-center ">Logging In <Loader2 className="ml-2 animate-spin" size={24}/></p>
+                            <p className="flex items-center">Logging In <Loader2 className="ml-2 animate-spin" size={24}/></p>
                         ):<p>Login</p>}
                         
                 </Button>
+                <Link to="/reset-password" className="mt-4 w-full">
+                    <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full py-3 cursor-pointer rounded-xl border-gray-600 text-black hover:bg-gray-300 transition-all"
+                    disabled={localLoading}
+                    >
+                    Forgot Password
+                    </Button>
+                </Link>
                 </div>
                 <p className="text-center text-gray-400 mt-6 text-sm">
                     Don't have an account ?{"   "}
                     <Link to="/register" className="text-blue-500 hover:underline">Register</Link>
                 </p>
                 
-            </form>
+            </motion.form>
         </div>
     )
 }
