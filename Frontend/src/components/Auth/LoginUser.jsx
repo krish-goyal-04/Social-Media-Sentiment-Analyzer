@@ -92,7 +92,10 @@ const LoginUser = ()=>{
                         placeholder={`${item.placeholder}`} 
                         className="bg-gray-800 border-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         value={item.value}
-                        onChange={(e)=>item.onChange(e.target.value.trim())}
+                        onChange={(e)=>{
+                            item.onChange(e.target.value.trim())
+                            if(error) setError(null)
+                            }}
                         disabled={localLoading}
                         />
                     ))}

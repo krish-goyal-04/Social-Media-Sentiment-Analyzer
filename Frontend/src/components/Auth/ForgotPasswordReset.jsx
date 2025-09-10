@@ -11,6 +11,7 @@ const ForgotPasswordReset = ()=>{
     const [email,setEmail] = useState('')
     const [error,setError] = useState(null)
     const [localLoading,setLocalLoading] = useState(false)
+    const [message,setMessage] = useState(null)
     const {user,forgotPassword} = useContext(AuthContext)
     
     useEffect(()=>{
@@ -35,9 +36,14 @@ const ForgotPasswordReset = ()=>{
             return  
             }
             await forgotPassword(email)
+            setMessage("Password reset email has been sent to your email (check spam folder if not in inbox).\n Redirecting...")
+            setTimeout(()=>{
+                setMessage(null)
+                navigate("/login")
+            },6000)
             setEmail('')
             console.log('Reset email sent')
-            navigate("/login")
+            
         }
         catch(err) {
             switch (err.code) {
@@ -73,6 +79,9 @@ const ForgotPasswordReset = ()=>{
                 </div>
                 {error && (
                     <p className="bg-red-900 bg-opacity-75 rounded-md text-white p-2 text-sm text-center mb-5">{error}</p>
+                )}
+                {message && (
+                    <p className="bg-gray-300 bg-opacity-75 rounded-md text-black p-2 text-sm text-center mb-5">{message}</p>
                 )}
                 <div className="space-y-5">
                     <Input 
