@@ -42,15 +42,12 @@ const appRouter = createBrowserRouter([
             element: <DisplayHistory />
           },
           {
-            path:"/test",
-            element:<LogOutPopOver />
-          },
-          {
             path:"/history/:id",
             element: <PrevResultDisplay />
           }
         ]
     },
+    
     {
       path:"/login",
       element:<LoginUser />

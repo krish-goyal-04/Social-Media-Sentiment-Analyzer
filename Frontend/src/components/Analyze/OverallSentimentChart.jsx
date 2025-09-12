@@ -13,7 +13,8 @@ const OverallSentimentChart = ({data,chart,COLORS})=>{
                             contentStyle={{borderRadius:"8px"}}
                             />
                         <Bar dataKey="value" stroke="#fff">
-                            {data.map((entry,index)=>(<Cell key={index} fill={COLORS[entry.name.toLowerCase()]} />))}
+                            {data.map((entry,index)=>(<Cell key={index} fill={COLORS[entry.name.toLowerCase()]} 
+                            />))}
                         </Bar>
 
                     </BarChart> 
@@ -28,7 +29,8 @@ const OverallSentimentChart = ({data,chart,COLORS})=>{
                             dataKey="value"
                         >
                             {data.map((entry,index)=>(
-                                <Cell key={index} fill={COLORS[entry.name.toLowerCase()]}/>
+                                <Cell key={index} fill={COLORS[entry.name.toLowerCase()]} 
+                                />
                             ))}
                         </Pie>
                         <Tooltip formatter={(value)=>Math.round(value)} 

@@ -1,9 +1,10 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../hooks/useAuthContext";
-import { Menu, X, LogOut, BarChart3, Home, History, User } from "lucide-react";
+import { Menu, X, LogOut, BarChart3, Home, History, User, LogIn } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import LogOutPopOver from "./Auth/LogoutPopOver";
+import AuthButton from "./Auth/AuthButton";
 
 const headerItems = [
   { name: "Home", link: "/", icon: Home },
@@ -14,10 +15,9 @@ const headerItems = [
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { logOut } = useContext(AuthContext);
+  const { logOut,user } = useContext(AuthContext);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [logoutClicked,setLogoutClicked] = useState(false)
-
+  
   const handleLogOut = async (e) => {
     e.preventDefault();
     try {
@@ -34,7 +34,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-neutral-900/95 backdrop-blur-md border-b border-neutral-800/50 sticky top-0 z-50 relative">
+    <header className=" bg-neutral-900/95 backdrop-blur-md border-b border-neutral-800/50 sticky top-0 z-50 relative">
       <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           
@@ -82,21 +82,7 @@ const Header = () => {
 
           {/* Desktop Logout Button */}
           <div className="hidden md:flex items-center space-x-6">
-            <motion.button
-              onClick={()=>setLogoutClicked(true)}
-              className="flex items-center space-x-2 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-indigo-500/25 focus-visible:ring-ring/50 focus-visible:ring-[3px] focus-visible:outline-none"
-              whileHover={{ scale: 1.05, y: -1 }}
-              whileTap={{ scale: 0.95 }}
-              disabled={logoutClicked}
-            >
-              <LogOut className="w-4 h-4" />
-              <span>Logout</span>
-            </motion.button>
-            {logoutClicked && (
-              <div className="absolute top-16 left-0 right-0">
-                <LogOutPopOver setLogoutClicked={setLogoutClicked} handleLogOut={handleLogOut} />
-              </div>
-            )}
+            <AuthButton user={user} handleLogOut={handleLogOut}/>
             <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -105,8 +91,8 @@ const Header = () => {
                   >
                     <Link to="/profile"><User size={28}  className=""/></Link>
               </motion.div>
+            </div>
           </div>
-
           {/* Mobile Menu Button*/}
           <motion.button
             onClick={toggleMobileMenu}
@@ -115,10 +101,9 @@ const Header = () => {
           >
             {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </motion.button>
-        </div>
-
+        
         {/* Mobile Navigation */}
-        {<AnimatePresence>
+        <AnimatePresence>
           {isMobileMenuOpen && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
@@ -154,37 +139,20 @@ const Header = () => {
                     </motion.div>
                   );
                 })}
-                
-                <motion.button
-                  onClick={()=>setLogoutClicked(true)}
-                  className="flex items-center space-x-3 w-full px-4 py-3 mt-4 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white rounded-lg text-sm font-medium transition-all duration-200"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: headerItems.length * 0.1 }}
-                  whileTap={{ scale: 0.98 }}
-                  disabled={logoutClicked}
-                >
-                  <LogOut className="w-5 h-5" />
-                  <span>Logout</span>
-                </motion.button>
-                {logoutClicked && (
-                  <div className="absolute top-16 left-0 right-0">
-                    <LogOutPopOver setLogoutClicked={setLogoutClicked} handleLogOut={handleLogOut} />
-                  </div>
-                )}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  whileHover={{scale:1.05,y:-1}}
-                  className=" bg-white w-10 h-10 flex items-center justify-center ml-5 mt-4 text-black rounded-full"
-                  >
-                    <Link to="/profile"><User size={28}  className=""/></Link>
-              </motion.div>
-              </nav>
-            </motion.div>
+
+                <AuthButton user={user} handleLogOut={handleLogOut}/>
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      whileHover={{scale:1.05,y:-1}}
+                      className=" bg-white w-10 h-10 flex items-center justify-center ml-5 mt-4 text-black rounded-full"
+                      >
+                        <Link to="/profile"><User size={28}  className=""/></Link>
+                  </motion.div>
+                  </nav>
+                </motion.div>
           )}
         </AnimatePresence>
-    }
       </div>
     </header>
   );

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { BarChart3, PieChart, TrendingUp, TrendingDown, Minus } from "lucide-react";
 import OverallSentimentChart from "./OverallSentimentChart";
 import SentimentBar from "./SentimentBar";
+import {Button} from "../ui/button"
 
 const COLORS = {
   positive: "#10b981",
@@ -41,9 +42,9 @@ const OverallSentiment = ({results})=>{
 
     const sentimentIndex = total > 0 ? ((pos.score-neg.score)/(pos.score+neg.score+neut.score)).toFixed(2) : 0
     const data = [
-        { name: "Positive", value: total > 0 ? (pos.count / total) * 100 : 0 },
-        { name: "Negative", value: total > 0 ? (neg.count / total) * 100 : 0 },
-        { name: "Neutral", value: total > 0 ? (neut.count / total) * 100 : 0 },
+        { name: "Positive", value: total > 0 ? Math.round((pos.count / total) * 100) : 0 },
+        { name: "Negative", value: total > 0 ? Math.round((neg.count / total) * 100) : 0 },
+        { name: "Neutral", value: total > 0 ? Math.round((neut.count / total) * 100) : 0 },
     ];
 
     const tweetStats = [
@@ -164,7 +165,11 @@ const OverallSentiment = ({results})=>{
                         </div>
                     ))}
                 </motion.div>
+                <div className="w-full flex items-center justify-center mt-8">
+                    <Button vairant="default">Summarize</Button>
+                </div>
             </div>
+            
         </motion.div>
     )
 }

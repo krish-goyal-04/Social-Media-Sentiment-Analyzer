@@ -4,8 +4,9 @@ import {Button} from "../ui/button"
 import { Link, useNavigate } from "react-router-dom"
 import {auth} from "../../lib/firebase"
 import { AuthContext } from "../../hooks/useAuthContext"
-import { Loader2 } from "lucide-react"
+import { Eye, EyeOff, Loader2 } from "lucide-react"
 import {motion} from "framer-motion"
+import Header from "../Header"
 
 const LoginUser = ()=>{
     const {user,logInUser} = useContext(AuthContext)
@@ -13,6 +14,7 @@ const LoginUser = ()=>{
     const [localLoading,setLocalLoading] = useState(false)
     const [email,setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [displayPassword,setDisplayPassword] = useState(false)
 
     const navigate = useNavigate()
 
@@ -68,8 +70,10 @@ const LoginUser = ()=>{
     };
 
     return(
-        <div 
-            className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black ">
+        <div className="">
+            <Header />
+            <div 
+            className="flex items-center justify-center min-h-screen  bg-gradient-to-br from-gray-900 via-gray-800 to-black ">
             <motion.form 
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -85,22 +89,41 @@ const LoginUser = ()=>{
                     <p className="bg-red-900 bg-opacity-75 rounded-md text-white p-2 text-sm text-center mb-5">{error}</p>
                 )}
                 <div className="space-y-5">
-                    {formItems.map((item,ind)=>(
-                        <Input 
-                        key={ind} 
-                        type={`${item.type}`} 
-                        placeholder={`${item.placeholder}`} 
+                    <Input 
+                        type='email'
+                        placeholder="Email" 
                         className="bg-gray-800 border-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        value={item.value}
+                        value={email}
                         onChange={(e)=>{
-                            item.onChange(e.target.value.trim())
+                            setEmail(e.target.value.trim())
                             if(error) setError(null)
                             }}
                         disabled={localLoading}
                         />
-                    ))}
+                        <div className="relative">
+                            <Input
+                        type={displayPassword?"text":"password"}
+                        placeholder="Password"
+                        className="bg-gray-800 border-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        value={password}
+                        onChange={(e)=>{
+                            setPassword(e.target.value.trim())
+                            if(error) setError(null)
+                        }}
+                        disabled={localLoading}
+                        />
+                        <button
+                            type="button"
+                            className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-white"
+                            onClick={()=>setDisplayPassword(!displayPassword)}
+                            tabIndex={-1}
+                            >
+                                 {displayPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
+                    
                 </div>
-                <div className="flex flex-col items-center  mx-6 ">
+                <div className="flex flex-col items-center  ">
                     <Button
                     type="submit"
                     variant="default"
@@ -130,6 +153,8 @@ const LoginUser = ()=>{
                 
             </motion.form>
         </div>
+        </div>
+        
     )
 }
 export default LoginUser

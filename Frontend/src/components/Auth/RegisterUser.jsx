@@ -5,8 +5,9 @@ import { Link, useNavigate } from "react-router-dom"
 import {db} from "../../lib/firebase"
 import { setDoc,doc } from "firebase/firestore"
 import { AuthContext } from "../../hooks/useAuthContext"
-import { Loader2 } from "lucide-react"
+import { Loader2,Eye,EyeOff } from "lucide-react"
 import { motion } from "framer-motion"
+import Header from "../Header"
 
 const RegisterUser = ()=>{
     const [firstName,setFirstName] = useState('')
@@ -15,6 +16,7 @@ const RegisterUser = ()=>{
     const [password, setPassword] = useState('')
     const [localLoading,setLocalLoading] = useState(false)
     const [error,setError] = useState('')
+    const [displayPassword,setDisplayPassword] = useState(false)
     const navigate = useNavigate()
 
     const {user,loading,createUser} = useContext(AuthContext)
@@ -29,7 +31,6 @@ const RegisterUser = ()=>{
         {type:"text",placeholder:"First Name",value:firstName,onChange:setFirstName},
         {type:"text",placeholder:"Last Name",value:lastName,onChange:setLastName},
         {type:"email",placeholder:"Email",value:email,onChange:setEmail},
-        {type:"password",placeholder:"Password",value:password,onChange:setPassword},
     ]
 
     const handleRegister = async (e)=>{
@@ -88,7 +89,9 @@ const RegisterUser = ()=>{
     }
 
     return(
-        <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black ">
+        <div>
+            <Header />
+            <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black ">
             <motion.form 
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -115,6 +118,27 @@ const RegisterUser = ()=>{
                         disabled={localLoading}
                         />
                     ))}
+                    <div className="relative">
+                            <Input
+                        type={displayPassword?"text":"password"}
+                        placeholder="Password"
+                        className="bg-gray-800 border-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        value={password}
+                        onChange={(e)=>{
+                            setPassword(e.target.value.trim())
+                            if(error) setError(null)
+                        }}
+                        disabled={localLoading}
+                        />
+                        <button
+                            type="button"
+                            className="absolute inset-y-0 right-3 flex items-center text-gray-400 hover:text-white"
+                            onClick={()=>setDisplayPassword(!displayPassword)}
+                            tabIndex={-1}
+                            >
+                                 {displayPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                            </button>
+                        </div>
                 </div>
                     <Button
                     type="submit"
@@ -132,6 +156,8 @@ const RegisterUser = ()=>{
                 
             </motion.form>
         </div>
+        </div>
+        
     )
 
 }
