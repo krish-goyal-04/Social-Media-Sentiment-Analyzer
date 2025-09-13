@@ -19,7 +19,13 @@ TrendPulse addresses the challenge of **extracting meaningful insights from this
 The result is a **scalable, user-friendly, and data-driven sentiment intelligence platform**.
 
 ---
+### Tech Stack
 
+- **Frontend**: React (Vite), Tailwind CSS, Recharts, Framer Motion
+- **Backend**: Python, FastAPI, PyTorch, Hugging Face Transformers, aiohttp
+- **Data Processing**: NLTK, Regex, TF-IDF
+- **Auth & Storage**: Firebase Authentication, Firestore
+ ---
 ## Key Features
 
 ### Data Collection
