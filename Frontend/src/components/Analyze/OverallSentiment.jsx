@@ -165,9 +165,6 @@ const OverallSentiment = ({results})=>{
                         </div>
                     ))}
                 </motion.div>
-                <div className="w-full flex items-center justify-center mt-8">
-                    <Button vairant="default">Summarize</Button>
-                </div>
             </div>
             
         </motion.div>

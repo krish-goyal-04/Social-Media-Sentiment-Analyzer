@@ -21,14 +21,14 @@ const EngagementChart = ({data,dataKey})=>{
     return(
         <ResponsiveContainer width="100%" height={400} >
             <LineChart width={600} height={400} data={chartData}>
-                <CartesianGrid stroke="#333" strokeDasharray="4 4"/>
+                <CartesianGrid stroke="#333" strokeDasharray="3 3"/>
                 <XAxis dataKey="modifiedTime" tick={{ fill: "#ccc" }} />
-                <YAxis tickFormatter={(t)=>dataKey === "engagement" ? `${t.toFixed(1)}%` : t} tick={{ fill: "#ccc" }}/>
+                <YAxis domain={[0,'auto']} tickFormatter={(t)=>dataKey === "engagement" ? `${t.toFixed(1)}%` : t} tick={{ fill: "#ccc" }}/>
                 <Tooltip formatter={(t)=>dataKey === "engagement" ? `${t.toFixed(1)}%` : t} />
                 <Legend />
 
                 <Line type="monotone" dataKey={`${dataKey}`} stroke={`${chartColors[dataKey]}`} strokeWidth={2}
-                    dot={false} name={dataKey==="engagement"?"Engagement Rate":dataKey}/>
+                     dot={false} name={dataKey==="engagement"?"Engagement Rate":dataKey}/>
                            
             </LineChart>
         </ResponsiveContainer>
