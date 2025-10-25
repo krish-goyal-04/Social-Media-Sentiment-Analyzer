@@ -1,4 +1,4 @@
-import nltk
+"""import nltk
 from nltk.tokenize import word_tokenize,sent_tokenize
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -18,7 +18,7 @@ def word_tokenizer(text):
         words = word_tokenize(sentences[i])
         words = [lemmatizer.lemmatize(word,'v').lower() for word in words if word.lower() not in set(stopwords.words('english')) and word.isalpha()]
         sentences[i]=' '.join(words)
-    return sentences
+    return sentences"""
 """
 print(word_tokenizer(Lemmatization is an important text pre-processing technique in Natural Language Processing (NLP) that reduces words to their base form known as a "lemma." For example, the lemma of "running" is "run" and "better" becomes "good." Unlike stemming which simply removes prefixes or suffixes, it considers the word's meaning and part of speech (POS) and ensures that the base form is a valid word. This makes lemmatization more accurate as it avoids generating non-dictionary words.
 
@@ -28,3 +28,12 @@ Improves accuracy: It ensures words with similar meanings like "running" and "ra
 Reduced Data Redundancy: By reducing words to their base forms, it reduces redundancy in the dataset. This leads to smaller datasets which makes it easier to handle and process large amounts of text for analysis or training machine learning models.
 Better NLP Model Performance: By treating all similar word as same, it improves the performance of NLP models by making text more consistent. For example, treating "running," "ran" and "runs" as the same word improves the model's understanding of context and meaning.))
 """
+
+from better_profanity import profanity
+from Text_Cleaning import clean_text
+
+def preprocess_tweet(tweet):
+    return {
+        "profanity_flag": profanity.contains_profanity(tweet),
+        "cleaned_data": clean_text(tweet),
+    }

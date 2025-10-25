@@ -9,6 +9,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from Emotion_Detection import detect_emotion
+from Text_Preprocessing import preprocess_tweet
 
 app = FastAPI()
 
@@ -41,10 +42,11 @@ async def mainFun(request:QueryRequest):
             "keywords": []
         }
     df = pd.DataFrame(tweets)
+    processed = df["text"].apply(preprocess_tweet)
 
-    df['profanity_flag'] = df['text'].apply(lambda x: profanity.contains_profanity(str(x)))
-
-    df['cleaned_data'] = df['text'].apply(clean_text)
+    df["profanity_flag"] = processed.apply(lambda x: x["profanity_flag"])
+    
+    df["cleaned_data"] = processed.apply(lambda x: x["cleaned_data"])
 
     df['individual_sentiment'] = sentiment_analyzer(df['cleaned_data'].tolist())
     
