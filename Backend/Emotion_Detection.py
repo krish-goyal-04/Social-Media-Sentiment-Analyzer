@@ -1,6 +1,6 @@
 from transformers import pipeline
 
-pipe = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-emotion-multilabel-latest", top_k=None, truncation=True,padding=True,max_length=512 )
+pipe = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-emotion-multilabel-latest", top_k=1, truncation=True,padding=True,max_length=512,batch_size=32)
 
 """text = [
     "I love this product, it's amazing! ❤️",
@@ -10,15 +10,13 @@ pipe = pipeline("text-classification", model="cardiffnlp/twitter-roberta-base-em
     "Haha that was hilarious 😂"
 ]"""
 
-def detect_emotion(text,batch_size=32):
+def detect_emotion(text):
     if isinstance(text,str):
         text = [text]
-    results = pipe(text,batch_size=batch_size)
+    results = pipe(text)
     final = []
-    for i,res in enumerate(results):
-        top_emotion = max(res,key=lambda x:x['score'])
-        final.append({
-            "emotion":top_emotion['label'],
-            "score":top_emotion['score']
-        })
+    for r in results:
+        final.append({"emotion": r[0]['label'], "score": round(r[0]['score'], 4)})
     return final
+"""if __name__ == "__main__":
+    print(detect_emotion(text))"""

@@ -10,7 +10,7 @@ API_KEY = os.getenv("API_KEY")
 URL = "https://api.twitterapi.io/twitter/tweet/advanced_search"
 HEADERS = {"X-API-Key": API_KEY}
 
-REQUESTS_PER_SECOND = 18  # lower if you still get 429
+REQUESTS_PER_SECOND = 10  # lower if you still get 429
 DELAY = 1 / REQUESTS_PER_SECOND   # gap between requests
 
 
