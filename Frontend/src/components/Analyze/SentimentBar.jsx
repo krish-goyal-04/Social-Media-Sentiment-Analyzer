@@ -2,22 +2,46 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 
 const SentimentBar = ({ sentimentIndex = 0 }) => {
+  // Ensure numeric input; fallback to 0 if NaN/undefined
+  const value = Number(sentimentIndex);
+  const safeValue = Number.isFinite(value)
+    ? Math.max(-1, Math.min(1, value))
+    : 0;
   // Normalize -1 → 0%, 0 → 50%, +1 → 100%
-  const normalized = Math.max(0, Math.min(100, ((sentimentIndex + 1) / 2) * 100));
+  const normalized = Math.max(0, Math.min(100, ((safeValue + 1) / 2) * 100));
 
   const getLabel = (value) => {
     if (value < -0.2)
-      return { text: "Negative", color: "text-red-400", glow: "shadow-red-500/50", bg: "bg-red-500/20" };
+      return {
+        text: "Negative",
+        color: "text-red-400",
+        glow: "shadow-red-500/50",
+        bg: "bg-red-500/20",
+      };
     if (value > 0.2)
-      return { text: "Positive", color: "text-emerald-400", glow: "shadow-emerald-500/50", bg: "bg-emerald-500/20" };
-    return { text: "Neutral", color: "text-yellow-300", glow: "shadow-yellow-400/50", bg: "bg-yellow-500/20" };
+      return {
+        text: "Positive",
+        color: "text-emerald-400",
+        glow: "shadow-emerald-500/50",
+        bg: "bg-emerald-500/20",
+      };
+    return {
+      text: "Neutral",
+      color: "text-yellow-300",
+      glow: "shadow-yellow-400/50",
+      bg: "bg-yellow-500/20",
+    };
   };
 
-  const { text, color, glow, bg } = getLabel(sentimentIndex);
+  const { text, color, glow, bg } = getLabel(safeValue);
   const [hovered, setHovered] = useState(false);
 
   return (
-    <div className="w-full max-w-lg p-5 rounded-2xl bg-gray-800/90 shadow-xl backdrop-blur relative">
+    <div
+      className="w-full max-w-lg p-5 rounded-2xl bg-gray-800/90 shadow-xl backdrop-blur relative"
+      role="img"
+      aria-label={`Sentiment ${text} (${safeValue.toFixed(2)})`}
+    >
       {/* Bar */}
       <div
         className="relative h-6 w-full rounded-full overflow-hidden ring-1 ring-white/10 cursor-pointer"
@@ -74,14 +98,14 @@ const SentimentBar = ({ sentimentIndex = 0 }) => {
         <span>+1</span>
       </div>
 
-      {/* Sentiment text */}
+      {/* Sentiment text and numeric index */}
       <motion.p
         className={`mt-3 text-center font-semibold tracking-wide ${color}`}
         initial={{ opacity: 0.6, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.4 }}
       >
-        {text}
+        {text} • Index {safeValue.toFixed(2)}
       </motion.p>
 
       {/* Hover tooltip */}
@@ -92,7 +116,7 @@ const SentimentBar = ({ sentimentIndex = 0 }) => {
           exit={{ opacity: 0 }}
           className="absolute bottom-full left-1/2 -translate-x-1/2 mb-3 px-3 py-1 rounded-md bg-gray-800 text-white text-xs shadow-lg"
         >
-          Sentiment Score: {sentimentIndex}
+          Sentiment Index: {safeValue.toFixed(2)} (−1 to +1)
         </motion.div>
       )}
     </div>
