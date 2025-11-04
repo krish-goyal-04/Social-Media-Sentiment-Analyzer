@@ -1,2 +1,12 @@
-pip install nltk transformers torch numpy scipy scikit-learn pandas better-profanity
+transformers==4.45.2
+torch==2.3.1
+aiohttp==3.9.5
+python-dotenv==1.0.1
+pandas==2.2.2
+scikit-learn==1.5.2
+numpy==1.26.4
+better-profanity==0.7.0
+fastapi==0.115.5
+uvicorn==0.31.1
+pydantic==2.9.2
 
